@@ -1032,7 +1032,7 @@ int64_t TStrTool::StrToInt64(std::string const& str)
         long long val = std::atoll(str.c_str());
 #endif
 
-#if LONGLONG_MAX > INT64_MAX
+#if LLONG_MAX > INT64_MAX
         if (val > std::numeric_limits<int64_t>::max())
             throw std::out_of_range("Value exceeds int64_t range");
 #endif
@@ -1088,7 +1088,7 @@ uint64_t TStrTool::StrToUInt64(std::string const& str)
         unsigned long long val = std::strtoull(str.c_str(), &endP, 10);
 #endif
 
-#if ULONGLONG_MAX > UINT64_MAX
+#if ULLONG_MAX > UINT64_MAX
         if (val > std::numeric_limits<uint64_t>::max())
         {   // should not happen on Windows (unsigned long == uint32_t)
             throw std::out_of_range("Value exceeds uint64_t range");

@@ -55,6 +55,7 @@ public:
 
 public:
     TVersion();
+    TVersion(WORD major, WORD minor, WORD build, WORD revision);
     TVersion(TVersion const& version);
     TVersion(unsigned __int64 valueU64);
     TVersion(std::string const& verStr);

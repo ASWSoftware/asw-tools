@@ -40,6 +40,12 @@ TVersion::TVersion()
     Reset();
 }
 //---------------------------------------------------------------------------
+TVersion::TVersion(WORD major, WORD minor, WORD build, WORD revision)
+{
+    Reset();
+    SetVersion(major, minor, build, revision);
+}
+//---------------------------------------------------------------------------
 TVersion::TVersion(TVersion const& version)
 {
     Reset();
