@@ -38,7 +38,7 @@ namespace ASWUnitTests
 // TTestGroup_ASWTools_Version_Tests
 /////////////////////////////////////////////////////////////////////////////
 
-//------------------------------------------------------------
+//---------------------------------------------------------------------------
 TTestGroup_ASWTools_Version_Tests::TTestGroup_ASWTools_Version_Tests()
     : inherited("ASWTools_Version_Tests")
 {
@@ -47,23 +47,23 @@ TTestGroup_ASWTools_Version_Tests::TTestGroup_ASWTools_Version_Tests()
     RegisterTest(Test_ExtractVersionNumbersFromVersionStr);
     RegisterTest(Test_SetVersion);
 }
-//------------------------------------------------------------
+//---------------------------------------------------------------------------
 TTestGroup_ASWTools_Version_Tests::~TTestGroup_ASWTools_Version_Tests()
 {
 }
-//------------------------------------------------------------
+//---------------------------------------------------------------------------
 void TTestGroup_ASWTools_Version_Tests::SetUp()
 {
 }
-//------------------------------------------------------------
+//---------------------------------------------------------------------------
 void TTestGroup_ASWTools_Version_Tests::TearDown()
 {
 }
-//------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 // /////// Begin tests after this line ///////////////////////
 
-//------------------------------------------------------------
+//---------------------------------------------------------------------------
 void TTestGroup_ASWTools_Version_Tests::Test_Compare()
 {
     // Arrange
@@ -82,7 +82,7 @@ void TTestGroup_ASWTools_Version_Tests::Test_Compare()
     AssertTrue(ver3 <= ver1, __func__, __LINE__, "Less than or equals ver1");
     AssertTrue(ver1 <= ver2, __func__, __LINE__, "Less than or equals ver2");
 }
-//------------------------------------------------------------
+//---------------------------------------------------------------------------
 void TTestGroup_ASWTools_Version_Tests::Test_Copy()
 {
     // Arrange
@@ -97,7 +97,7 @@ void TTestGroup_ASWTools_Version_Tests::Test_Copy()
     testVer.CopyFrom(ver2);
     AssertEquals(ver2.VersionU64, testVer.VersionU64, __func__, __LINE__, "Copy ver2");
 }
-//------------------------------------------------------------
+//---------------------------------------------------------------------------
 void TTestGroup_ASWTools_Version_Tests::Test_ExtractVersionNumbersFromVersionStr()
 {
     // Arrange
@@ -118,7 +118,7 @@ void TTestGroup_ASWTools_Version_Tests::Test_ExtractVersionNumbersFromVersionStr
     AssertEquals(expected.VersionU64, actual4.VersionU64, __func__, __LINE__, "Constructor U64");
     AssertNotEquals(expected.VersionU64, actualNotEquals.VersionU64, __func__, __LINE__, "Values are default??");
 }
-//------------------------------------------------------------
+//---------------------------------------------------------------------------
 void TTestGroup_ASWTools_Version_Tests::Test_SetVersion()
 {
     // Arrange
@@ -136,6 +136,6 @@ void TTestGroup_ASWTools_Version_Tests::Test_SetVersion()
     AssertTrue(parts.Major == major && parts.Minor == minor && parts.Build == build && parts.Revision == revision,
         __func__, __LINE__, "SetVersion()");
 }
-//------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 } // ASWUnitTests

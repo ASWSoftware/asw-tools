@@ -2,9 +2,12 @@
 TestHandler.h
 Author: Anthony S. West - ASW Software
 
-A simple unit testing framework
+A simple unit testing framework.
 
 Requires C++ 11 or higher.
+
+To register a test module, create a class that inherits 'TTestGroupBase'.
+Add the module's .h and register it in: 'TTestHandler::RegisterTestGroups()'
 
 Copyright 2025 Anthony S. West
 
