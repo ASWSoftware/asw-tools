@@ -46,9 +46,6 @@ public:
     TTestGroup_ASWTools_Version_Tests();
     ~TTestGroup_ASWTools_Version_Tests() override;
 
-    std::string const& GetTestGroupName() override;
-    TTestResults const& Results() override;
-    void Run() override;
     void SetUp() override;
     void TearDown() override;
 };

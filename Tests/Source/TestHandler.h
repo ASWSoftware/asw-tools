@@ -2,9 +2,12 @@
 TestHandler.h
 Author: Anthony S. West - ASW Software
 
-A simple unit testing framework
+A simple unit testing framework.
 
 Requires C++ 11 or higher.
+
+To register a test module, create a class that inherits 'TTestGroupBase'.
+Add the module's .h and register it in: 'TTestHandler::RegisterTestGroups()'
 
 Copyright 2025 Anthony S. West
 
@@ -26,6 +29,8 @@ limitations under the License.
 #define TestHandlerH
 //---------------------------------------------------------------------------
 #include <cstdint>
+#include <functional>
+#include <memory>
 #include <string>
 #include <vector>
 //---------------------------------------------------------------------------
@@ -78,11 +83,17 @@ public:
 class ITestGroup
 {
 public:
+    //typedef void (*Test_FPtr)(void* thisP);
+    typedef std::function<void ()> TestCallback;
+    typedef std::vector<TestCallback> TestCallbackList;
+
+public:
     virtual ~ITestGroup()
     {
     }
 
     virtual std::string const& GetTestGroupName() = 0;
+    virtual TestCallbackList& GetTestCallbackList() = 0;
     virtual TTestResults const& Results() = 0;
     virtual void Run() = 0;
     virtual void SetUp() = 0;
@@ -101,25 +112,21 @@ class TTestGroupBase : public ITestGroup
 private:
     typedef ITestGroup inherited;
 
-public:
-    //typedef void (*Test_FPtr)(void* thisP);
-    typedef std::function<void ()> TestCallback;
-
 protected:
     bool m_ExceptionExpected;
     std::string m_ExceptionExpectedText;
     std::string m_Name;
     TTestResults m_Results;
+    TestCallbackList m_TestCallbacks;
 
     virtual void Log(std::string const& msg);
+    virtual void RegisterTest(TestCallback callback);
     virtual void SetExceptionExpected(bool expected, std::string const& method, int line, std::string const& msg);
     virtual void Test(TestCallback callback); // Child classes call this for performing the test
 
 protected: // Assertion methods - Equals
     virtual void AssertEquals(
         bool expected, char actual, std::string const& method, int line, std::string const& msg);
-    virtual void AssertEquals(
-        char expected, char actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertEquals(
         int64_t expected, int64_t actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertEquals(
@@ -144,8 +151,6 @@ protected: // Assertion methods - Equals
 protected: // Assertion methods - Not Equals
     virtual void AssertNotEquals(
         bool expected, char actual, std::string const& method, int line, std::string const& msg);
-    virtual void AssertNotEquals(
-        char expected, char actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertNotEquals(
         int64_t expected, int64_t actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertNotEquals(
@@ -173,6 +178,11 @@ protected: // Assertion methods - Boolean
 
 public:
     TTestGroupBase(std::string const& name);
+
+    TestCallbackList& GetTestCallbackList() override;
+    std::string const& GetTestGroupName() override;
+    TTestResults const& Results() override;
+    void Run() override;
 };
 
 
@@ -190,13 +200,16 @@ private:
     ITestGroups m_TestGroups;
 
 private:
-    bool RegisterTests();
+    void RegisterTestGroups();
+
+public:
+    static std::string GetUTCTimeISO8601();
 
 public:
     TTestHandler();
     ~TTestHandler();
 
-    bool Initialize();
+    void Initialize();
     TTestResults Run();
 };
 

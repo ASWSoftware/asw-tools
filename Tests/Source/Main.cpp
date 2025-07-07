@@ -38,28 +38,22 @@ int _tmain(int /*argc*/, _TCHAR* /*argv*/[])
     {
         TTestHandler tester;
 
-        if (!tester.Initialize())
-        {
-            std::cout << "\nFailed to initialize the test handler." << std::endl;
+        tester.Initialize();
+
+        TTestResults testResults = tester.Run();
+        unsigned int nTestsFailed = testResults.FailedCount;
+        if (nTestsFailed > 0)
             returnCode = 1;
-        }
-        else
-        {
-            TTestResults testResults = tester.Run();
-            unsigned int nTestsFailed = testResults.FailedCount;
-            if (nTestsFailed > 0)
-                returnCode = 2;
-        }
     }
     catch (std::exception const& ex)
     {
         std::cout << "\nTerminating app. Unhandled exception: " << ex.what() << std::endl;
-        returnCode = 3;
+        returnCode = 2;
     }
     catch (...)
     {
         std::cout << "\nTerminating app. Unhandled exception: Unknown" << std::endl;
-        returnCode = 4;
+        returnCode = 3;
     }
 
 #ifdef _DEBUG

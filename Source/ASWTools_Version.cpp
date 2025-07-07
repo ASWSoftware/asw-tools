@@ -52,7 +52,7 @@ TVersion::TVersion(TVersion const& version)
     VersionU64 = version.VersionU64;
 }
 //---------------------------------------------------------------------------
-TVersion::TVersion(unsigned __int64 valueU64)
+TVersion::TVersion(uint64_t valueU64)
 {
     Reset();
     VersionU64 = valueU64;

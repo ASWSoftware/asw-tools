@@ -42,6 +42,7 @@ limitations under the License.
 //#include <cctype>
 #include <limits>
 #include <locale>
+#include <memory>
 #include <stdexcept>
 #include <cwctype>
 //---------------------------------------------------------------------------
