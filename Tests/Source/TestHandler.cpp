@@ -24,8 +24,12 @@ limitations under the License.
 // Module header
 #include "TestHandler.h"
 //---------------------------------------------------------------------------
+#include <chrono>
+#include <ctime>
 #include <functional>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 //---------------------------------------------------------------------------
 #include "TestException.h"
 //---------------------------------------------------------------------------
@@ -48,30 +52,55 @@ TTestHandler::~TTestHandler()
 {
 }
 //---------------------------------------------------------------------------
-/*
-    TTestHandler::Initialize
-
-    Registers tests.
-*/
-bool TTestHandler::Initialize()
+std::string TTestHandler::GetUTCTimeISO8601()
 {
-    return RegisterTests();
+    // Get the current time as a time_point
+    auto now = std::chrono::system_clock::now();
+
+    // Convert to time_t for time manipulation
+    std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);
+    auto milliSecs = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+
+    // Convert to UTC time structure
+    std::tm utc_tm = *std::gmtime(&now_time_t);
+
+    // Format the time into a string
+    std::ostringstream oss;
+    oss << std::put_time(&utc_tm, "%Y-%m-%dT%H:%M:%S") << '.'
+    << std::setfill('0') << std::setw(3) << milliSecs.count() << "Z";
+    return oss.str();
+}
+//---------------------------------------------------------------------------
+void TTestHandler::Initialize()
+{
+    std::cout << "Initializing test handler and registering test groups..." << std::endl;
+    RegisterTestGroups();
+
+    std::cout << "Test groups registered: " << m_TestGroups.size() << std::endl;
+
+    size_t totalTests = 0;
+
+    for (ITestGroups::iterator it = m_TestGroups.begin(); it != m_TestGroups.end(); it++)
+    {
+        ITestGroup& testGroup = *it->get();
+        totalTests += testGroup.GetTestCallbackList().size();
+    }
+
+    std::cout << "Total tests registered: " << totalTests << std::endl;
 }
 //---------------------------------------------------------------------------
 /*
-    TTestHandler::RegisterTests
+    TTestHandler::RegisterTestGroups
 
     Developer: Add tests here.
 */
-bool TTestHandler::RegisterTests()
+void TTestHandler::RegisterTestGroups()
 {
     // ----- Add each class to be tested
 
     m_TestGroups.push_back(std::unique_ptr<TTestGroup_ASWTools_Version_Tests>(new TTestGroup_ASWTools_Version_Tests()));
 
     // ----- End adding classes to be tested
-
-    return true;
 }
 //---------------------------------------------------------------------------
 /*
@@ -82,25 +111,29 @@ bool TTestHandler::RegisterTests()
 TTestResults TTestHandler::Run()
 {
     TTestResults testResults;
+    size_t groupNum = 0;
+    size_t nGroups = m_TestGroups.size();
+    auto start = std::chrono::high_resolution_clock::now();
 
-    std::cout << "\nTests started." << std::endl;
+    std::cout << "\n[" << GetUTCTimeISO8601() << "] Tests started." << std::endl << std::endl;
 
     for (ITestGroups::iterator it = m_TestGroups.begin(); it != m_TestGroups.end(); it++)
     {
-        ITestGroup& tests = *it->get();
-        std::string const& name = tests.GetTestGroupName();
+        ITestGroup& testGroup = *it->get();
+        std::string const& name = testGroup.GetTestGroupName();
+        size_t nTestsInGroup = testGroup.GetTestCallbackList().size();
 
         // set up
-        std::cout << "\n-----------------------------------------------------" << std::endl;
-        std::cout << "Setting up test group: \"" << name << "\"" << std::endl;
-        tests.SetUp();
+        std::cout << "--------------------------------------------------------------------------------" << std::endl;
+        std::cout << "[" << GetUTCTimeISO8601() << "] Setting up group " << ++groupNum << " of "
+        << nGroups << ": \"" << name << "\"" << std::endl;
+        testGroup.SetUp();
 
         // run
-        std::cout << "Running test group: \"" << name << "\"" << std::endl;
-        tests.Run();
-        TTestResults const& testGroupResults = tests.Results();
-        std::cout << "Done running tests for group: \"" << name
-        << "\". Succeeded: " << testGroupResults.SuccessCount
+        std::cout << "Running " << nTestsInGroup << " test" << (nTestsInGroup == 1 ? ". " : "s. ") << std::endl;
+        testGroup.Run();
+        TTestResults const& testGroupResults = testGroup.Results();
+        std::cout << "Done. Succeeded: " << testGroupResults.SuccessCount
         << ", failed: " << testGroupResults.FailedCount << std::endl;
 
         testResults.FailedCount += testGroupResults.FailedCount;
@@ -108,13 +141,33 @@ TTestResults TTestHandler::Run()
         testResults.AddMessages(testGroupResults.Messages);
 
         // tear down
-        std::cout << "Tearing down group: \"" << name << "\"" << std::endl;
-        tests.TearDown();
+        std::cout << "[" << GetUTCTimeISO8601() << "] Tearing down group: \"" << name << "\"" << std::endl;
+        testGroup.TearDown();
     }
 
-    std::cout << "-----------------------------------------------------" << std::endl;
-    std::cout << "\nTests done. Totals: succeeded: " << testResults.SuccessCount
+    auto end = std::chrono::high_resolution_clock::now();
+
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+
+    std::cout << "\n[" << GetUTCTimeISO8601() << "] Tests done: Totals: succeeded: " << testResults.SuccessCount
     << ", failed: " << testResults.FailedCount << std::endl;
+
+    // Get elapsed time
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+    // Convert to hours, minutes, seconds, and milliseconds
+    long long totalMilliseconds = elapsed.count();
+    long long hours = totalMilliseconds / (1000 * 60 * 60);
+    totalMilliseconds %= (1000 * 60 * 60);
+    long long mins = totalMilliseconds / (1000 * 60);
+    totalMilliseconds %= (1000 * 60);
+    long long secs = totalMilliseconds / 1000;
+    long long milliseconds = totalMilliseconds % 1000;
+
+    // Display the result
+    std::cout << "Elapsed time: " << std::setfill('0') << std::setw(2) << hours << "h:" << std::setfill('0')
+    << std::setw(2) << mins << "m:" << std::setfill('0') << std::setw(2) << secs << "s."
+    << std::setfill('0') << std::setw(3) << milliseconds << "ms\n";
 
     return testResults;
 }
@@ -448,6 +501,36 @@ void TTestGroupBase::AssertTrue(bool testVal, std::string const& method, int lin
 void TTestGroupBase::Log(std::string const& msg)
 {
     std::cout << msg << std::endl;
+}
+//---------------------------------------------------------------------------
+void TTestGroupBase::RegisterTest(TestCallback callback)
+{
+    m_TestCallbacks.push_back(callback);
+}
+//---------------------------------------------------------------------------
+TTestGroupBase::TestCallbackList& TTestGroupBase::GetTestCallbackList()
+{
+    return m_TestCallbacks;
+}
+//---------------------------------------------------------------------------
+std::string const& TTestGroupBase::GetTestGroupName()
+{
+    return m_Name;
+}
+//---------------------------------------------------------------------------
+TTestResults const& TTestGroupBase::Results()
+{
+    return m_Results;
+}
+//---------------------------------------------------------------------------
+void TTestGroupBase::Run()
+{
+    //Test(std::bind(&TTestGroup_ASWTools_Version_Tests::Test_SetVersion, this, std::placeholders::_1));
+
+    for (TestCallbackList::iterator it = m_TestCallbacks.begin(); it != m_TestCallbacks.end(); it++)
+    {
+        Test(*it);
+    }
 }
 //---------------------------------------------------------------------------
 /*

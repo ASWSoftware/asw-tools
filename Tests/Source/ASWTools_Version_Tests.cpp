@@ -42,29 +42,14 @@ namespace ASWUnitTests
 TTestGroup_ASWTools_Version_Tests::TTestGroup_ASWTools_Version_Tests()
     : inherited("ASWTools_Version_Tests")
 {
+    RegisterTest(Test_Compare);
+    RegisterTest(Test_Copy);
+    RegisterTest(Test_ExtractVersionNumbersFromVersionStr);
+    RegisterTest(Test_SetVersion);
 }
 //------------------------------------------------------------
 TTestGroup_ASWTools_Version_Tests::~TTestGroup_ASWTools_Version_Tests()
 {
-}
-//------------------------------------------------------------
-std::string const& TTestGroup_ASWTools_Version_Tests::GetTestGroupName()
-{
-    return m_Name;
-}
-//------------------------------------------------------------
-TTestResults const& TTestGroup_ASWTools_Version_Tests::Results()
-{
-    return m_Results;
-}
-//------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::Run()
-{
-    //Test(std::bind(&TTestGroup_ASWTools_Version_Tests::Test_SetVersion, this, std::placeholders::_1));
-    Test(Test_Compare);
-    Test(Test_Copy);
-    Test(Test_ExtractVersionNumbersFromVersionStr);
-    Test(Test_SetVersion);
 }
 //------------------------------------------------------------
 void TTestGroup_ASWTools_Version_Tests::SetUp()
