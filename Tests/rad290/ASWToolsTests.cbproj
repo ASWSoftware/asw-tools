@@ -185,6 +185,10 @@
             <BuildOrder>0</BuildOrder>
             <PCH>true</PCH>
         </PCHCompile>
+        <CppCompile Include="..\Source\ASWTools_Path_Tests.cpp">
+            <DependentOn>..\Source\ASWTools_Path_Tests.h</DependentOn>
+            <BuildOrder>13</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\Source\ASWTools_Version_Tests.cpp">
             <DependentOn>..\Source\ASWTools_Version_Tests.h</DependentOn>
             <BuildOrder>11</BuildOrder>

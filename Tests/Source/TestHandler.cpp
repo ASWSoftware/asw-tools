@@ -32,6 +32,7 @@ limitations under the License.
 //---------------------------------------------------------------------------
 #include "TestException.h"
 //---------------------------------------------------------------------------
+#include "ASWTools_Path_Tests.h"
 #include "ASWTools_Version_Tests.h"
 //---------------------------------------------------------------------------
 
@@ -478,6 +479,7 @@ void TTestHandler::RegisterTestGroups()
 
     // ----- Add each class to be tested
 
+    m_TestGroups.push_back(std::unique_ptr<TTestGroup_ASWTools_Path_Tests>(new TTestGroup_ASWTools_Path_Tests()));
     m_TestGroups.push_back(std::unique_ptr<TTestGroup_ASWTools_Version_Tests>(new TTestGroup_ASWTools_Version_Tests()));
 
     // ----- End adding classes to be tested
