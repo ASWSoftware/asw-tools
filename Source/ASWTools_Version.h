@@ -25,6 +25,7 @@ limitations under the License.
 #ifndef ASWTools_VersionH
 #define ASWTools_VersionH
 //---------------------------------------------------------------------------
+#include <cstdint>
 #include <string>
 #include <windows.h>
 //---------------------------------------------------------------------------
@@ -57,7 +58,7 @@ public:
     TVersion();
     TVersion(WORD major, WORD minor, WORD build, WORD revision);
     TVersion(TVersion const& version);
-    TVersion(unsigned __int64 valueU64);
+    TVersion(uint64_t valueU64);
     TVersion(std::string const& verStr);
     TVersion(std::wstring const& verStr);
     ~TVersion();
@@ -65,7 +66,7 @@ public:
     // Share memory between version elements for easy assignment working with windows version stuff
     union
     {
-        unsigned long long VersionU64;
+        uint64_t VersionU64;
         TVerParts Version;
     };
 

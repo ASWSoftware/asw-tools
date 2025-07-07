@@ -29,6 +29,8 @@ limitations under the License.
 #define TestHandlerH
 //---------------------------------------------------------------------------
 #include <cstdint>
+#include <functional>
+#include <memory>
 #include <string>
 #include <vector>
 //---------------------------------------------------------------------------
@@ -126,8 +128,6 @@ protected: // Assertion methods - Equals
     virtual void AssertEquals(
         bool expected, char actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertEquals(
-        char expected, char actual, std::string const& method, int line, std::string const& msg);
-    virtual void AssertEquals(
         int64_t expected, int64_t actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertEquals(
         uint64_t expected, uint64_t actual, std::string const& method, int line, std::string const& msg);
@@ -151,8 +151,6 @@ protected: // Assertion methods - Equals
 protected: // Assertion methods - Not Equals
     virtual void AssertNotEquals(
         bool expected, char actual, std::string const& method, int line, std::string const& msg);
-    virtual void AssertNotEquals(
-        char expected, char actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertNotEquals(
         int64_t expected, int64_t actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertNotEquals(

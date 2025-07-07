@@ -26,7 +26,6 @@ limitations under the License.
 //---------------------------------------------------------------------------
 #include <chrono>
 #include <ctime>
-#include <functional>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -57,18 +56,6 @@ void TTestGroupBase::AssertEquals(
     {
         std::string expectedStr = (expected ? "true" : "false");
         std::string actualStr = (actual ? "true" : "false");
-        throw TExceptEquals("Expected \"" + expectedStr + "\" but was \"" + actualStr + "\". " +
-            method + "(" + std::to_string(line) + "): " + msg);
-    }
-}
-//---------------------------------------------------------------------------
-void TTestGroupBase::AssertEquals(
-    char expected, char actual, std::string const& method, int line, std::string const& msg)
-{
-    if (expected != actual)
-    {
-        std::string expectedStr(1, expected);
-        std::string actualStr(1, actual);
         throw TExceptEquals("Expected \"" + expectedStr + "\" but was \"" + actualStr + "\". " +
             method + "(" + std::to_string(line) + "): " + msg);
     }
@@ -202,18 +189,6 @@ void TTestGroupBase::AssertNotEquals(
     {
         std::string expectedStr = (expected ? "true" : "false");
         std::string actualStr = (actual ? "true" : "false");
-        throw TExceptNotEquals("Expected \"" + expectedStr + "\" but was \"" + actualStr + "\". " +
-            method + "(" + std::to_string(line) + "): " + msg);
-    }
-}
-//---------------------------------------------------------------------------
-void TTestGroupBase::AssertNotEquals(
-    char expected, char actual, std::string const& method, int line, std::string const& msg)
-{
-    if (expected == actual)
-    {
-        std::string expectedStr(1, expected);
-        std::string actualStr(1, actual);
         throw TExceptNotEquals("Expected \"" + expectedStr + "\" but was \"" + actualStr + "\". " +
             method + "(" + std::to_string(line) + "): " + msg);
     }
