@@ -46,7 +46,7 @@ TTestGroupBase::TTestGroupBase(std::string const& name)
 }
 //---------------------------------------------------------------------------
 void TTestGroupBase::AssertEquals(
-    bool expected, char actual, std::string const& method, int line, std::string const& msg)
+    bool expected, bool actual, std::string const& method, int line, std::string const& msg)
 {
     if (expected != actual)
     {
@@ -179,7 +179,7 @@ void TTestGroupBase::AssertFalse(bool testVal, std::string const& method, int li
 }
 //---------------------------------------------------------------------------
 void TTestGroupBase::AssertNotEquals(
-    bool expected, char actual, std::string const& method, int line, std::string const& msg)
+    bool expected, bool actual, std::string const& method, int line, std::string const& msg)
 {
     if (expected == actual)
     {

@@ -111,7 +111,7 @@ protected:
 
 protected: // Assertion methods - Equals
     virtual void AssertEquals(
-        bool expected, char actual, std::string const& method, int line, std::string const& msg);
+        bool expected, bool actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertEquals(
         int64_t expected, int64_t actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertEquals(
@@ -135,7 +135,7 @@ protected: // Assertion methods - Equals
 
 protected: // Assertion methods - Not Equals
     virtual void AssertNotEquals(
-        bool expected, char actual, std::string const& method, int line, std::string const& msg);
+        bool expected, bool actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertNotEquals(
         int64_t expected, int64_t actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertNotEquals(
