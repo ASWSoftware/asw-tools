@@ -402,7 +402,7 @@ TTestGroupBase::TestCallbackList& TTestGroupBase::GetTestCallbackList()
     return m_TestCallbacks;
 }
 //---------------------------------------------------------------------------
-std::string const& TTestGroupBase::GetTestGroupName()
+std::string const& TTestGroupBase::GetTestGroupName() const
 {
     return m_Name;
 }
@@ -427,7 +427,7 @@ void TTestGroupBase::ResetTestFailedOneOrMoreChecks()
     m_TestFailedCheck = false;
 }
 //---------------------------------------------------------------------------
-TTestResults const& TTestGroupBase::Results()
+TTestResults const& TTestGroupBase::Results() const
 {
     return m_Results;
 }

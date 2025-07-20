@@ -77,9 +77,9 @@ public:
     {
     }
 
-    virtual std::string const& GetTestGroupName() = 0;
     virtual TestCallbackList& GetTestCallbackList() = 0;
-    virtual TTestResults const& Results() = 0;
+    virtual std::string const& GetTestGroupName() const = 0;
+    virtual TTestResults const& Results() const = 0;
     virtual void Run() = 0;
     virtual void SetUp() = 0;
     virtual void TearDown() = 0;
@@ -225,8 +225,8 @@ public:
     TTestGroupBase(std::string const& name);
 
     TestCallbackList& GetTestCallbackList() override;
-    std::string const& GetTestGroupName() override;
-    TTestResults const& Results() override;
+    std::string const& GetTestGroupName() const override;
+    TTestResults const& Results() const override;
     void Run() override;
 };
 

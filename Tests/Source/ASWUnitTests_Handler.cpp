@@ -117,7 +117,7 @@ TTestResults TTestHandler::Run()
     TTestResults testResults;
     size_t groupNum = 0;
     size_t nGroups = m_TestGroups.size();
-    auto start = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point const start = std::chrono::high_resolution_clock::now();
 
     std::cout << "\n[" << GetUTCTimeISO8601() << "] Tests started." << std::endl << std::endl;
 
@@ -149,7 +149,7 @@ TTestResults TTestHandler::Run()
         testGroup.TearDown();
     }
 
-    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point const end = std::chrono::high_resolution_clock::now();
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
 
@@ -157,16 +157,16 @@ TTestResults TTestHandler::Run()
     << ", failed: " << testResults.FailedCount << std::endl;
 
     // Get elapsed time
-    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::chrono::milliseconds const elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
     // Convert to hours, minutes, seconds, and milliseconds
     long long totalMilliseconds = elapsed.count();
-    long long hours = totalMilliseconds / (1000 * 60 * 60);
+    long long const hours = totalMilliseconds / (1000 * 60 * 60);
     totalMilliseconds %= (1000 * 60 * 60);
-    long long mins = totalMilliseconds / (1000 * 60);
+    long long const mins = totalMilliseconds / (1000 * 60);
     totalMilliseconds %= (1000 * 60);
-    long long secs = totalMilliseconds / 1000;
-    long long milliseconds = totalMilliseconds % 1000;
+    long long const secs = totalMilliseconds / 1000;
+    long long const milliseconds = totalMilliseconds % 1000;
 
     // Display the result
     std::cout << "Elapsed time: " << std::setfill('0') << std::setw(2) << hours << "h:" << std::setfill('0')
