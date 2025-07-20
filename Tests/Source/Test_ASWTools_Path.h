@@ -37,9 +37,12 @@ private:
     typedef TTestGroupBase inherited;
 
 private: // Test methods
+    void Test_Combine();
+    void Test_ExpandEnvironmentVars();
     void Test_IsDots();
-    void Test_IsRelative();
     void Test_IsEnvironment();
+    void Test_IsNetwork();
+    void Test_IsRelative();
 
 public:
     TTest_ASWTools_Path();
