@@ -22,7 +22,7 @@ limitations under the License.
 #ifndef Test_ASWTools_PathH
 #define Test_ASWTools_PathH
 //---------------------------------------------------------------------------
-#include "ASWUnitTests_Handler.h"
+#include "ASWUnitTests_TestBase.h"
 //---------------------------------------------------------------------------
 
 namespace ASWUnitTests

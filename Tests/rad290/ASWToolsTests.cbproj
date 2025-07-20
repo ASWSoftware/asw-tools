@@ -193,6 +193,10 @@
             <DependentOn>..\Source\ASWUnitTests_Handler.h</DependentOn>
             <BuildOrder>2</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\Source\ASWUnitTests_TestBase.cpp">
+            <DependentOn>..\Source\ASWUnitTests_TestBase.h</DependentOn>
+            <BuildOrder>14</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\Source\Main.cpp">
             <BuildOrder>1</BuildOrder>
         </CppCompile>

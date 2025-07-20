@@ -22,7 +22,7 @@ limitations under the License.
 #ifndef Test_ASWTools_VersionH
 #define Test_ASWTools_VersionH
 //---------------------------------------------------------------------------
-#include "ASWUnitTests_Handler.h"
+#include "ASWUnitTests_TestBase.h"
 //---------------------------------------------------------------------------
 
 namespace ASWUnitTests
