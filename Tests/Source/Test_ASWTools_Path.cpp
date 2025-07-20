@@ -74,14 +74,14 @@ void TTest_ASWTools_Path::Test_IsDots()
     std::wstring failDotsW = L"...";
 
     // Act & Assert
-    AssertTrue(TPathTool::IsDots(dot), __func__, __LINE__, "Single dot, ansi");
-    AssertTrue(TPathTool::IsDots(dots), __func__, __LINE__, "Double dots, ansi");
-    AssertFalse(TPathTool::IsDots(failDots), __func__, __LINE__, "Triple dots, ansi");
-    AssertFalse(TPathTool::IsDots(""), __func__, __LINE__, "Empty, ansi");
-    AssertTrue(TPathTool::IsDots(dotW), __func__, __LINE__, "Single dot, wide");
-    AssertTrue(TPathTool::IsDots(dotsW), __func__, __LINE__, "Double dots, wide");
-    AssertFalse(TPathTool::IsDots(failDotsW), __func__, __LINE__, "Triple dots, wide");
-    AssertFalse(TPathTool::IsDots(L""), __func__, __LINE__, "Empty, wide");
+    CheckTrue(TPathTool::IsDots(dot), __func__, __LINE__, "Single dot, ansi");
+    CheckTrue(TPathTool::IsDots(dots), __func__, __LINE__, "Double dots, ansi");
+    CheckFalse(TPathTool::IsDots(failDots), __func__, __LINE__, "Triple dots, ansi");
+    CheckFalse(TPathTool::IsDots(""), __func__, __LINE__, "Empty, ansi");
+    CheckTrue(TPathTool::IsDots(dotW), __func__, __LINE__, "Single dot, wide");
+    CheckTrue(TPathTool::IsDots(dotsW), __func__, __LINE__, "Double dots, wide");
+    CheckFalse(TPathTool::IsDots(failDotsW), __func__, __LINE__, "Triple dots, wide");
+    CheckFalse(TPathTool::IsDots(L""), __func__, __LINE__, "Empty, wide");
 }
 //---------------------------------------------------------------------------
 void TTest_ASWTools_Path::Test_IsRelative()
@@ -107,27 +107,27 @@ void TTest_ASWTools_Path::Test_IsRelative()
     std::wstring fullW = L"C:\\not\\a\\relative\\path\\file.txt";
 
     // Act & Assert
-    AssertTrue(TPathTool::IsRelative(relative1), __func__, __LINE__, "relative1, ansi");
-    AssertTrue(TPathTool::IsRelative(relative1W), __func__, __LINE__, "relative1, wide");
-    AssertTrue(TPathTool::IsRelative(relative2), __func__, __LINE__, "relative2, ansi");
-    AssertTrue(TPathTool::IsRelative(relative2W), __func__, __LINE__, "relative2, wide");
-    AssertTrue(TPathTool::IsRelative(relative3), __func__, __LINE__, "relative3, ansi");
-    AssertTrue(TPathTool::IsRelative(relative3W), __func__, __LINE__, "relative3, wide");
-    AssertTrue(TPathTool::IsRelative(relative4), __func__, __LINE__, "relative4, ansi");
-    AssertTrue(TPathTool::IsRelative(relative4W), __func__, __LINE__, "relative4, wide");
-    AssertTrue(TPathTool::IsRelative(relative5), __func__, __LINE__, "relative5, ansi");
-    AssertTrue(TPathTool::IsRelative(relative5W), __func__, __LINE__, "relative5, wide");
-    AssertTrue(TPathTool::IsRelative(relative6), __func__, __LINE__, "relative6, ansi");
-    AssertTrue(TPathTool::IsRelative(relative6W), __func__, __LINE__, "relative6, wide");
+    CheckTrue(TPathTool::IsRelative(relative1), __func__, __LINE__, "relative1, ansi");
+    CheckTrue(TPathTool::IsRelative(relative1W), __func__, __LINE__, "relative1, wide");
+    CheckTrue(TPathTool::IsRelative(relative2), __func__, __LINE__, "relative2, ansi");
+    CheckTrue(TPathTool::IsRelative(relative2W), __func__, __LINE__, "relative2, wide");
+    CheckTrue(TPathTool::IsRelative(relative3), __func__, __LINE__, "relative3, ansi");
+    CheckTrue(TPathTool::IsRelative(relative3W), __func__, __LINE__, "relative3, wide");
+    CheckTrue(TPathTool::IsRelative(relative4), __func__, __LINE__, "relative4, ansi");
+    CheckTrue(TPathTool::IsRelative(relative4W), __func__, __LINE__, "relative4, wide");
+    CheckTrue(TPathTool::IsRelative(relative5), __func__, __LINE__, "relative5, ansi");
+    CheckTrue(TPathTool::IsRelative(relative5W), __func__, __LINE__, "relative5, wide");
+    CheckTrue(TPathTool::IsRelative(relative6), __func__, __LINE__, "relative6, ansi");
+    CheckTrue(TPathTool::IsRelative(relative6W), __func__, __LINE__, "relative6, wide");
 
-    AssertFalse(TPathTool::IsRelative(network), __func__, __LINE__, "network, ansi");
-    AssertFalse(TPathTool::IsRelative(networkW), __func__, __LINE__, "network, wide");
+    CheckFalse(TPathTool::IsRelative(network), __func__, __LINE__, "network, ansi");
+    CheckFalse(TPathTool::IsRelative(networkW), __func__, __LINE__, "network, wide");
 
-    AssertFalse(TPathTool::IsRelative(environment), __func__, __LINE__, "environment, ansi");
-    AssertFalse(TPathTool::IsRelative(environmentW), __func__, __LINE__, "environmentW, wide");
+    CheckFalse(TPathTool::IsRelative(environment), __func__, __LINE__, "environment, ansi");
+    CheckFalse(TPathTool::IsRelative(environmentW), __func__, __LINE__, "environmentW, wide");
 
-    AssertFalse(TPathTool::IsRelative(full), __func__, __LINE__, "full, ansi");
-    AssertFalse(TPathTool::IsRelative(fullW), __func__, __LINE__, "fullW, wide");
+    CheckFalse(TPathTool::IsRelative(full), __func__, __LINE__, "full, ansi");
+    CheckFalse(TPathTool::IsRelative(fullW), __func__, __LINE__, "fullW, wide");
 }
 //---------------------------------------------------------------------------
 void TTest_ASWTools_Path::Test_IsEnvironment()
@@ -143,17 +143,17 @@ void TTest_ASWTools_Path::Test_IsEnvironment()
     std::wstring fullW = L"C:\\not\\a\\relative\\path\\file.txt";
 
     // Act & Assert
-    AssertTrue(TPathTool::IsEnvironment(environment), __func__, __LINE__, "environment, ansi");
-    AssertTrue(TPathTool::IsEnvironment(environmentW), __func__, __LINE__, "environmentW, wide");
+    CheckTrue(TPathTool::IsEnvironment(environment), __func__, __LINE__, "environment, ansi");
+    CheckTrue(TPathTool::IsEnvironment(environmentW), __func__, __LINE__, "environmentW, wide");
 
-    AssertFalse(TPathTool::IsEnvironment(relative1), __func__, __LINE__, "relative1, ansi");
-    AssertFalse(TPathTool::IsEnvironment(relative1W), __func__, __LINE__, "relative1, wide");
+    CheckFalse(TPathTool::IsEnvironment(relative1), __func__, __LINE__, "relative1, ansi");
+    CheckFalse(TPathTool::IsEnvironment(relative1W), __func__, __LINE__, "relative1, wide");
 
-    AssertFalse(TPathTool::IsEnvironment(network), __func__, __LINE__, "network, ansi");
-    AssertFalse(TPathTool::IsEnvironment(networkW), __func__, __LINE__, "network, wide");
+    CheckFalse(TPathTool::IsEnvironment(network), __func__, __LINE__, "network, ansi");
+    CheckFalse(TPathTool::IsEnvironment(networkW), __func__, __LINE__, "network, wide");
 
-    AssertFalse(TPathTool::IsEnvironment(full), __func__, __LINE__, "full, ansi");
-    AssertFalse(TPathTool::IsEnvironment(fullW), __func__, __LINE__, "fullW, wide");
+    CheckFalse(TPathTool::IsEnvironment(full), __func__, __LINE__, "full, ansi");
+    CheckFalse(TPathTool::IsEnvironment(fullW), __func__, __LINE__, "fullW, wide");
 }
 //---------------------------------------------------------------------------
 
