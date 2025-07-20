@@ -60,58 +60,6 @@ TPathTool::~TPathTool()
 {
 }
 //---------------------------------------------------------------------------
-bool TPathTool::IsDots(std::string str)
-{
-    return (str == "." || str == "..");
-}
-//---------------------------------------------------------------------------
-bool TPathTool::IsDots(std::wstring str)
-{
-    return (str == L"." || str == L"..");
-}
-//---------------------------------------------------------------------------
-// -Static
-// -Returns true if: no drive found, not a network path, and doesn't start with an environment var.
-bool TPathTool::IsRelative(std::string const& path)
-{
-    return (path.find(":") == std::string::npos) && !(path.find("%") == 0) && !(path.find("\\\\") == 0);
-}
-//---------------------------------------------------------------------------
-// -Static
-// -Returns true if: no drive found, not a network path, and doesn't start with an environment var.
-bool TPathTool::IsRelative(std::wstring const& path)
-{
-    return (path.find(L":") == std::wstring::npos) && !(path.find(L"%") == 0) && !(path.find(L"\\\\") == 0);
-}
-//---------------------------------------------------------------------------
-// -Static
-// -Returns true if environment var symbol found in the path.
-bool TPathTool::IsEnvironment(std::string const& path)
-{
-    return (path.find("%") != std::string::npos);
-}
-//---------------------------------------------------------------------------
-// -Static
-// -Returns true if environment var symbol found in the path.
-bool TPathTool::IsEnvironment(std::wstring const& path)
-{
-    return (path.find(L"%") != std::wstring::npos);
-}
-//---------------------------------------------------------------------------
-// -Static
-// -Returns true path starts with network slashes.
-bool TPathTool::IsNetwork(std::string const& path)
-{
-    return (path.find("\\\\") == 0);
-}
-//---------------------------------------------------------------------------
-// -Static
-// -Returns true path starts with network slashes.
-bool TPathTool::IsNetwork(std::wstring const& path)
-{
-    return (path.find(L"\\\\") == 0);
-}
-//---------------------------------------------------------------------------
 // -Static
 // - Combines two paths while properly handling directory separator chars.
 std::string TPathTool::Combine(std::string const& path1, std::string const& path2)
@@ -614,6 +562,408 @@ bool TPathTool::File_Close(FILE*& file)
 }
 //---------------------------------------------------------------------------
 // -Static
+// -Gets the last extension (e.g. ".txt") from the path. If no extension
+//  found, returns empty string.
+std::string TPathTool::GetExtension(std::string const& path)
+{
+    size_t splitIdx = path.find_last_of(".");
+    if (splitIdx == std::string::npos)
+        return "";
+    return path.substr(splitIdx, path.length() - splitIdx);
+}
+//---------------------------------------------------------------------------
+// -Static
+// -Gets the last extension (e.g. ".txt") from the path. If no extension
+//  found, returns empty string.
+std::wstring TPathTool::GetExtension(std::wstring const& path)
+{
+    size_t splitIdx = path.find_last_of(L".");
+    if (splitIdx == std::wstring::npos)
+        return L"";
+    return path.substr(splitIdx, path.length() - splitIdx);
+}
+//---------------------------------------------------------------------------
+// -Static
+// - Generates a random name of given length, using the default charset in AlphaCharsA
+std::string TPathTool::GenerateRandomNameA(size_t len)
+{
+    return GenerateRandomName(len, AlphaCharsA);
+}
+//---------------------------------------------------------------------------
+// -Static
+// -If parameter charList is zero length, default AlphaCharsA is used.
+std::string TPathTool::GenerateRandomName(size_t len, std::string const& charList)
+{
+    if (0 == len)
+        return "";
+
+    int randMax = static_cast<int>(charList.length() - 1);
+    std::string randName;
+    randName.reserve(len);
+
+    for (size_t i = 0; i < len; i++)
+        randName += charList[static_cast<size_t>(rand() % randMax)];
+    return randName;
+}
+//---------------------------------------------------------------------------
+// -Static
+// - Generates a random name of given length, using the default charset in AlphaCharsW
+std::wstring TPathTool::GenerateRandomNameW(size_t len)
+{
+    return GenerateRandomName(len, AlphaCharsW);
+}
+//---------------------------------------------------------------------------
+// -Static
+// -If parameter charList is zero length, default AlphaCharsW is used.
+std::wstring TPathTool::GenerateRandomName(size_t len, std::wstring const& charList)
+{
+    if (0 == len)
+        return L"";
+
+    int randMax = static_cast<int>(charList.length() - 1);
+    std::wstring randName;
+    randName.reserve(len);
+
+    for (size_t i = 0; i < len; i++)
+        randName += charList[static_cast<size_t>(rand() % randMax)];
+    return randName;
+}
+//---------------------------------------------------------------------------
+std::string TPathTool::GetDocumentsDirA()
+{
+    return GetSpecialFolderDirA(CSIDL_PERSONAL);
+}
+//---------------------------------------------------------------------------
+std::wstring TPathTool::GetDocumentsDirW()
+{
+    return GetSpecialFolderDirW(CSIDL_PERSONAL);
+}
+//---------------------------------------------------------------------------
+/*
+    TPathTool::GetFullPathA
+
+    Returns the full path for a relative path. The path does not have to exist.
+*/
+std::string TPathTool::GetFullPathA(std::string const& src)
+{
+    size_t fullDirSize = 1024; // resized if needed below, but should be plenty
+    char* fullDir = new char[fullDirSize]; // stores expanded directory path (no ~)
+    std::unique_ptr<char[]> auto_fullDir(fullDir);
+
+    size_t copiedLen = ::GetFullPathNameA(src.c_str(), static_cast<DWORD>(fullDirSize), fullDir, nullptr);
+    if (0 == copiedLen)
+        return "";
+
+    if (copiedLen > fullDirSize)
+    {
+        fullDirSize = copiedLen;
+        auto_fullDir.reset(new char[fullDirSize]);
+        fullDir = auto_fullDir.get();
+
+        copiedLen = ::GetFullPathNameA(src.c_str(), static_cast<DWORD>(fullDirSize), fullDir, nullptr);
+        if (0 == copiedLen)
+            return "";
+    }
+
+    return std::string(fullDir);
+}
+//---------------------------------------------------------------------------
+/*
+    TPathTool::GetFullPathW
+
+    Returns the full path for a relative path. The path does not have to exist.
+*/
+std::wstring TPathTool::GetFullPathW(std::wstring const& src)
+{
+    size_t fullDirSize = 32767; // 32767 is max unicode path length
+    wchar_t* fullDir = new wchar_t[fullDirSize]; // stores expanded directory path (no ~)
+    std::unique_ptr<wchar_t[]> auto_fullDir(fullDir);
+
+    size_t copiedLen = ::GetFullPathNameW(src.c_str(), static_cast<DWORD>(fullDirSize), fullDir, nullptr);
+    if (0 == copiedLen)
+        return L"";
+
+    if (copiedLen > fullDirSize)
+    {
+        fullDirSize = copiedLen;
+        auto_fullDir.reset(new wchar_t[fullDirSize]);
+        fullDir = auto_fullDir.get();
+
+        copiedLen = ::GetFullPathNameW(src.c_str(), static_cast<DWORD>(fullDirSize), fullDir, nullptr);
+        if (0 == copiedLen)
+            return L"";
+    }
+
+    return std::wstring(fullDir);
+}
+//---------------------------------------------------------------------------
+/*
+    TPathTool::GetLongPathA
+
+    Expands a DOS short path (~) to a long path. The path must exist or an empty string will be returned.
+*/
+std::string TPathTool::GetLongPathA(std::string const& src)
+{
+    size_t longDirSize = 1024; // resized if needed below, but should be plenty
+    char* longDir = new char[longDirSize]; // stores expanded directory path (no ~)
+    std::unique_ptr<char[]> auto_longDir(longDir);
+
+    // make sure not a DOS path
+    size_t copiedLen = ::GetLongPathNameA(src.c_str(), longDir, static_cast<DWORD>(longDirSize));
+    if (0 == copiedLen)
+        return "";
+
+    if (copiedLen > longDirSize)
+    {
+        longDirSize = copiedLen;
+        auto_longDir.reset(new char[longDirSize]);
+        longDir = auto_longDir.get();
+
+        copiedLen = ::GetLongPathNameA(src.c_str(), longDir, static_cast<DWORD>(longDirSize));
+        if (0 == copiedLen)
+            return "";
+    }
+
+    return std::string(longDir);
+}
+//---------------------------------------------------------------------------
+/*
+    TPathTool::GetLongPathW
+
+    Expands a DOS short path (~) to a long path. The path must exist or an empty string will be returned.
+*/
+std::wstring TPathTool::GetLongPathW(std::wstring const& src)
+{
+    size_t longDirSize = 32767; // 32767 is max unicode path length
+    wchar_t* longDir = new wchar_t[longDirSize]; // stores expanded directory path (no ~)
+    std::unique_ptr<wchar_t[]> auto_longDir(longDir);
+
+    // make sure not a DOS path
+    size_t copiedLen = ::GetLongPathNameW(src.c_str(), longDir, static_cast<DWORD>(longDirSize));
+    if (0 == copiedLen)
+        return L"";
+
+    if (copiedLen > longDirSize)
+    {
+        longDirSize = copiedLen;
+        auto_longDir.reset(new wchar_t[longDirSize]);
+        longDir = auto_longDir.get();
+
+        copiedLen = ::GetLongPathNameW(src.c_str(), longDir, static_cast<DWORD>(longDirSize));
+        if (0 == copiedLen)
+            return L"";
+    }
+
+    return std::wstring(longDir);
+}
+//---------------------------------------------------------------------------
+std::string TPathTool::GetPicturesDirA()
+{
+    return GetSpecialFolderDirA(CSIDL_MYPICTURES);
+}
+//---------------------------------------------------------------------------
+std::wstring TPathTool::GetPicturesDirW()
+{
+    return GetSpecialFolderDirW(CSIDL_MYPICTURES);
+}
+//---------------------------------------------------------------------------
+/*
+    TPathTool::GetShortPathA
+
+    Converts a long path to a DOS short path (e.g. ~). The path must exist or an empty string will be returned.
+*/
+std::string TPathTool::GetShortPathA(std::string const& src)
+{
+    size_t dirSize = 1024; // resized if needed below, but should be plenty
+    char* dir = new char[dirSize]; // stores short DOS directory path (e.g. with ~)
+    std::unique_ptr<char[]> auto_dir(dir);
+
+    size_t copiedLen = ::GetShortPathNameA(src.c_str(), dir, static_cast<DWORD>(dirSize));
+    if (0 == copiedLen)
+        return "";
+
+    if (copiedLen > dirSize)
+    {
+        dirSize = copiedLen;
+        auto_dir.reset(new char[dirSize]);
+        dir = auto_dir.get();
+
+        copiedLen = ::GetShortPathNameA(src.c_str(), dir, static_cast<DWORD>(dirSize));
+        if (0 == copiedLen)
+            return "";
+    }
+
+    return std::string(dir);
+}
+//---------------------------------------------------------------------------
+/*
+    TPathTool::GetShortPathW
+
+    Converts a long path to a DOS short path (e.g. ~). The path must exist or an empty string will be returned.
+*/
+std::wstring TPathTool::GetShortPathW(std::wstring const& src)
+{
+    size_t dirSize = 32767; // 32767 is max unicode path length
+    wchar_t* dir = new wchar_t[dirSize]; // stores short DOS directory path (e.g. with ~)
+    std::unique_ptr<wchar_t[]> auto_dir(dir);
+
+    size_t copiedLen = ::GetShortPathNameW(src.c_str(), dir, static_cast<DWORD>(dirSize));
+    if (0 == copiedLen)
+        return L"";
+
+    if (copiedLen > dirSize)
+    {
+        dirSize = copiedLen;
+        auto_dir.reset(new wchar_t[dirSize]);
+        dir = auto_dir.get();
+
+        copiedLen = ::GetShortPathNameW(src.c_str(), dir, static_cast<DWORD>(dirSize));
+        if (0 == copiedLen)
+            return L"";
+    }
+
+    return std::wstring(dir);
+}
+//---------------------------------------------------------------------------
+// -Static
+std::string TPathTool::GetSpecialFolderDirA(int folderCSIDL)
+{
+    size_t tempDirSize = MAX_PATH;
+    char* tempDir = new char[tempDirSize];
+    std::unique_ptr<char[]> auto_tempDir(tempDir);
+
+    if (!SUCCEEDED(::SHGetFolderPathA(nullptr, folderCSIDL, nullptr, SHGFP_TYPE_CURRENT, tempDir)))
+        return "";
+
+    // return the expanded, non-DOS path
+    return GetLongPathA(tempDir);
+}
+//---------------------------------------------------------------------------
+// -Static
+std::wstring TPathTool::GetSpecialFolderDirW(int folderCSIDL)
+{
+    size_t tempDirSize = MAX_PATH; // 32767 is max unicode path length
+    wchar_t* tempDir = new wchar_t[tempDirSize];
+    std::unique_ptr<wchar_t[]> auto_tempDir(tempDir);
+
+    if (!SUCCEEDED(::SHGetFolderPathW(nullptr, folderCSIDL, nullptr, SHGFP_TYPE_CURRENT, tempDir)))
+        return L"";
+
+    // return the expanded, non-DOS path
+    return GetLongPathW(tempDir);
+}
+//---------------------------------------------------------------------------
+// -Static
+std::string TPathTool::GetTempDirA()
+{
+    size_t tempDirLen = MAX_PATH + 1; // initial length - resized if needed
+    char* tempDir = new char[tempDirLen + sizeof('\0')];
+    std::unique_ptr<char[]> auto_tempDir(tempDir);
+
+    size_t copiedLen = ::GetTempPathA(static_cast<DWORD>(tempDirLen), tempDir);
+    if (0 == copiedLen)
+        return "";
+
+    if (copiedLen > tempDirLen)
+    {
+        // Buffer is too small - reallocate
+        tempDirLen = copiedLen + sizeof('\0');
+        auto_tempDir.reset(new char[tempDirLen + sizeof('\0')]);
+        tempDir = auto_tempDir.get();
+
+        copiedLen = ::GetTempPathA(static_cast<DWORD>(tempDirLen), tempDir);
+        if (0 == copiedLen)
+            return "";
+    }
+
+    tempDir[tempDirLen] = '\0'; // For safety
+
+    // return the expanded, non-DOS path
+    return GetLongPathA(tempDir);
+}
+//---------------------------------------------------------------------------
+// -Static
+std::wstring TPathTool::GetTempDirW()
+{
+    size_t tempDirLen = MAX_PATH + 1;
+    wchar_t* tempDir = new wchar_t[tempDirLen + sizeof('\0')];
+    std::unique_ptr<wchar_t[]> auto_tempDir(tempDir);
+
+    size_t copiedLen = ::GetTempPathW(static_cast<DWORD>(tempDirLen), tempDir);
+    if (0 == copiedLen)
+        return L"";
+
+    if (copiedLen > tempDirLen)
+    {
+        // Buffer is too small - reallocate
+        tempDirLen = copiedLen + sizeof('\0');
+        auto_tempDir.reset(new wchar_t[tempDirLen + sizeof('\0')]);
+        tempDir = auto_tempDir.get();
+
+        copiedLen = ::GetTempPathW(static_cast<DWORD>(tempDirLen), tempDir);
+        if (0 == copiedLen)
+            return L"";
+    }
+
+    tempDir[tempDirLen] = L'\0'; // For safety
+
+    // return the expanded, non-DOS path
+    return GetLongPathW(tempDir);
+}
+//---------------------------------------------------------------------------
+bool TPathTool::IsDots(std::string str)
+{
+    return (str == "." || str == "..");
+}
+//---------------------------------------------------------------------------
+bool TPathTool::IsDots(std::wstring str)
+{
+    return (str == L"." || str == L"..");
+}
+//---------------------------------------------------------------------------
+// -Static
+// -Returns true if environment var symbol found in the path.
+bool TPathTool::IsEnvironment(std::string const& path)
+{
+    return (path.find("%") != std::string::npos);
+}
+//---------------------------------------------------------------------------
+// -Static
+// -Returns true if environment var symbol found in the path.
+bool TPathTool::IsEnvironment(std::wstring const& path)
+{
+    return (path.find(L"%") != std::wstring::npos);
+}
+//---------------------------------------------------------------------------
+// -Static
+// -Returns true path starts with network slashes.
+bool TPathTool::IsNetwork(std::string const& path)
+{
+    return (path.find("\\\\") == 0);
+}
+//---------------------------------------------------------------------------
+// -Static
+// -Returns true path starts with network slashes.
+bool TPathTool::IsNetwork(std::wstring const& path)
+{
+    return (path.find(L"\\\\") == 0);
+}
+//---------------------------------------------------------------------------
+// -Static
+// -Returns true if: no drive found, not a network path, and doesn't start with an environment var.
+bool TPathTool::IsRelative(std::string const& path)
+{
+    return (path.find(":") == std::string::npos) && !(path.find("%") == 0) && !(path.find("\\\\") == 0);
+}
+//---------------------------------------------------------------------------
+// -Static
+// -Returns true if: no drive found, not a network path, and doesn't start with an environment var.
+bool TPathTool::IsRelative(std::wstring const& path)
+{
+    return (path.find(L":") == std::wstring::npos) && !(path.find(L"%") == 0) && !(path.find(L"\\\\") == 0);
+}
+//---------------------------------------------------------------------------
+// -Static
 // -maxWaitMS defaults to 4000 milliseconds - 0 ms is unlimited wait
 bool TPathTool::File_Remove(std::string const& fileName, DWORD maxWaitMS)
 {
@@ -695,256 +1045,6 @@ std::wstring TPathTool::RemoveExtension(std::wstring const& path)
     if (splitIdx == std::wstring::npos)
         return path;
     return path.substr(0, splitIdx);
-}
-//---------------------------------------------------------------------------
-// -Static
-// -Gets the last extension (e.g. ".txt") from the path. If no extension
-//  found, returns empty string.
-std::string TPathTool::GetExtension(std::string const& path)
-{
-    size_t splitIdx = path.find_last_of(".");
-    if (splitIdx == std::string::npos)
-        return "";
-    return path.substr(splitIdx, path.length() - splitIdx);
-}
-//---------------------------------------------------------------------------
-// -Static
-// -Gets the last extension (e.g. ".txt") from the path. If no extension
-//  found, returns empty string.
-std::wstring TPathTool::GetExtension(std::wstring const& path)
-{
-    size_t splitIdx = path.find_last_of(L".");
-    if (splitIdx == std::wstring::npos)
-        return L"";
-    return path.substr(splitIdx, path.length() - splitIdx);
-}
-//---------------------------------------------------------------------------
-// -Static
-// - Generates a random name of given length, using the default charset in AlphaCharsA
-std::string TPathTool::GenerateRandomNameA(size_t len)
-{
-    return GenerateRandomName(len, AlphaCharsA);
-}
-//---------------------------------------------------------------------------
-// -Static
-// -If parameter charList is zero length, default AlphaCharsA is used.
-std::string TPathTool::GenerateRandomName(size_t len, std::string const& charList)
-{
-    if (0 == len)
-        return "";
-
-    int randMax = static_cast<int>(charList.length() - 1);
-    std::string randName;
-    randName.reserve(len);
-
-    for (size_t i = 0; i < len; i++)
-        randName += charList[static_cast<size_t>(rand() % randMax)];
-    return randName;
-}
-//---------------------------------------------------------------------------
-// -Static
-// - Generates a random name of given length, using the default charset in AlphaCharsW
-std::wstring TPathTool::GenerateRandomNameW(size_t len)
-{
-    return GenerateRandomName(len, AlphaCharsW);
-}
-//---------------------------------------------------------------------------
-// -Static
-// -If parameter charList is zero length, default AlphaCharsW is used.
-std::wstring TPathTool::GenerateRandomName(size_t len, std::wstring const& charList)
-{
-    if (0 == len)
-        return L"";
-
-    int randMax = static_cast<int>(charList.length() - 1);
-    std::wstring randName;
-    randName.reserve(len);
-
-    for (size_t i = 0; i < len; i++)
-        randName += charList[static_cast<size_t>(rand() % randMax)];
-    return randName;
-}
-//---------------------------------------------------------------------------
-std::string TPathTool::GetDocumentsDirA()
-{
-    return GetSpecialFolderDirA(CSIDL_PERSONAL);
-}
-//---------------------------------------------------------------------------
-std::wstring TPathTool::GetDocumentsDirW()
-{
-    return GetSpecialFolderDirW(CSIDL_PERSONAL);
-}
-//---------------------------------------------------------------------------
-std::string TPathTool::GetPicturesDirA()
-{
-    return GetSpecialFolderDirA(CSIDL_MYPICTURES);
-}
-//---------------------------------------------------------------------------
-std::wstring TPathTool::GetPicturesDirW()
-{
-    return GetSpecialFolderDirW(CSIDL_MYPICTURES);
-}
-//---------------------------------------------------------------------------
-// -Static
-std::string TPathTool::GetSpecialFolderDirA(int folderCSIDL)
-{
-    size_t tempDirSize = MAX_PATH;
-    char* tempDir = new char[tempDirSize];
-    std::unique_ptr<char[]> auto_tempDir(tempDir);
-
-    if (!SUCCEEDED(::SHGetFolderPathA(nullptr, folderCSIDL, nullptr, SHGFP_TYPE_CURRENT, tempDir)))
-        return "";
-
-    size_t longDirSize = 1024; // resized if needed below, but should be plenty
-    char* longDir = new char[longDirSize]; // stores expanded directory path (no ~)
-    std::unique_ptr<char[]> auto_longDir(longDir);
-
-    // make sure not a DOS path
-    size_t copiedLen = ::GetLongPathNameA(tempDir, longDir, static_cast<DWORD>(longDirSize));
-    if (0 == copiedLen)
-        return "";
-
-    if (copiedLen > longDirSize)
-    {
-        longDirSize = copiedLen;
-        auto_longDir.reset(new char[longDirSize]);
-        longDir = auto_longDir.get();
-
-        copiedLen = ::GetLongPathNameA(tempDir, longDir, static_cast<DWORD>(longDirSize));
-        if (0 == copiedLen)
-            return "";
-    }
-
-    return std::string(longDir);
-}
-//---------------------------------------------------------------------------
-// -Static
-std::wstring TPathTool::GetSpecialFolderDirW(int folderCSIDL)
-{
-    size_t tempDirSize = MAX_PATH; // 32767 is max unicode path length
-    wchar_t* tempDir = new wchar_t[tempDirSize];
-    std::unique_ptr<wchar_t[]> auto_tempDir(tempDir);
-
-    if (!SUCCEEDED(::SHGetFolderPathW(nullptr, folderCSIDL, nullptr, SHGFP_TYPE_CURRENT, tempDir)))
-        return L"";
-
-    size_t longDirSize = 32767; // 32767 is max unicode path length
-    wchar_t* longDir = new wchar_t[longDirSize]; // stores expanded directory path (no ~)
-    std::unique_ptr<wchar_t[]> auto_longDir(longDir);
-
-    // make sure not a DOS path
-    size_t copiedLen = ::GetLongPathNameW(tempDir, longDir, static_cast<DWORD>(longDirSize));
-    if (0 == copiedLen)
-        return L"";
-
-    if (copiedLen > longDirSize)
-    {
-        longDirSize = copiedLen;
-        auto_longDir.reset(new wchar_t[longDirSize]);
-        longDir = auto_longDir.get();
-
-        copiedLen = ::GetLongPathNameW(tempDir, longDir, static_cast<DWORD>(longDirSize));
-        if (0 == copiedLen)
-            return L"";
-    }
-
-    return std::wstring(longDir);
-}
-//---------------------------------------------------------------------------
-// -Static
-std::string TPathTool::GetTempDirA()
-{
-    size_t tempDirLen = MAX_PATH + 1; // initial length - resized if needed
-    char* tempDir = new char[tempDirLen + sizeof('\0')];
-    std::unique_ptr<char[]> auto_tempDir(tempDir);
-
-    size_t copiedLen = ::GetTempPathA(static_cast<DWORD>(tempDirLen), tempDir);
-    if (0 == copiedLen)
-        return "";
-
-    if (copiedLen > tempDirLen)
-    {
-        // Buffer is too small - reallocate
-        tempDirLen = copiedLen + sizeof('\0');
-        auto_tempDir.reset(new char[tempDirLen + sizeof('\0')]);
-        tempDir = auto_tempDir.get();
-
-        copiedLen = ::GetTempPathA(static_cast<DWORD>(tempDirLen), tempDir);
-        if (0 == copiedLen)
-            return "";
-    }
-
-    tempDir[tempDirLen] = '\0'; // For safety
-
-    size_t longDirSize = tempDirLen + 32767 + sizeof('\0'); // 32767 is max unicode path length
-    char* longDir = new char[longDirSize]; // stores expanded directory path (no ~)
-    std::unique_ptr<char[]> auto_longDir(longDir);
-
-    // make sure not a DOS path
-    copiedLen = ::GetLongPathNameA(tempDir, longDir, static_cast<DWORD>(longDirSize));
-    if (0 == copiedLen)
-        return "";
-
-    if (copiedLen > longDirSize)
-    {
-        longDirSize = copiedLen;
-        auto_longDir.reset(new char[longDirSize]);
-        longDir = auto_longDir.get();
-
-        copiedLen = ::GetLongPathNameA(tempDir, longDir, static_cast<DWORD>(longDirSize));
-        if (0 == copiedLen)
-            return "";
-    }
-
-    return std::string(longDir);
-}
-//---------------------------------------------------------------------------
-// -Static
-std::wstring TPathTool::GetTempDirW()
-{
-    size_t tempDirLen = MAX_PATH + 1;
-    wchar_t* tempDir = new wchar_t[tempDirLen + sizeof('\0')];
-    std::unique_ptr<wchar_t[]> auto_tempDir(tempDir);
-
-    size_t copiedLen = ::GetTempPathW(static_cast<DWORD>(tempDirLen), tempDir);
-    if (0 == copiedLen)
-        return L"";
-
-    if (copiedLen > tempDirLen)
-    {
-        // Buffer is too small - reallocate
-        tempDirLen = copiedLen + sizeof('\0');
-        auto_tempDir.reset(new wchar_t[tempDirLen + sizeof('\0')]);
-        tempDir = auto_tempDir.get();
-
-        copiedLen = ::GetTempPathW(static_cast<DWORD>(tempDirLen), tempDir);
-        if (0 == copiedLen)
-            return L"";
-    }
-
-    tempDir[tempDirLen] = L'\0'; // For safety
-
-    size_t longDirSize = tempDirLen + 32767 + sizeof('\0'); // 32767 is max unicode path length
-    wchar_t* longDir = new wchar_t[longDirSize]; // stores expanded directory path (no ~)
-    std::unique_ptr<wchar_t[]> auto_longDir(longDir);
-
-    // make sure not a DOS path
-    copiedLen = ::GetLongPathNameW(tempDir, longDir, static_cast<DWORD>(longDirSize));
-    if (0 == copiedLen)
-        return L"";
-
-    if (copiedLen > longDirSize)
-    {
-        longDirSize = copiedLen;
-        auto_longDir.reset(new wchar_t[longDirSize]);
-        longDir = auto_longDir.get();
-
-        copiedLen = ::GetLongPathNameW(tempDir, longDir, static_cast<DWORD>(longDirSize));
-        if (0 == copiedLen)
-            return L"";
-    }
-
-    return std::wstring(longDir);
 }
 //---------------------------------------------------------------------------
 

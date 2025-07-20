@@ -95,6 +95,15 @@ public: // Misc. path related methods
     static std::wstring GenerateRandomNameW(size_t len);
     static std::wstring GenerateRandomName(size_t len, std::wstring const& charList);
 
+    static std::string GetFullPathA(std::string const& src);
+    static std::wstring GetFullPathW(std::wstring const& src);
+
+    static std::string GetLongPathA(std::string const& src);
+    static std::wstring GetLongPathW(std::wstring const& src);
+
+    static std::string GetShortPathA(std::string const& src);
+    static std::wstring GetShortPathW(std::wstring const& src);
+
     static std::string GetDocumentsDirA();
     static std::wstring GetDocumentsDirW();
     static std::string GetPicturesDirA();

@@ -1,5 +1,5 @@
 /* **************************************************************************
-ASWTools_Version_Tests.cpp
+Test_ASWTools_Version.cpp
 Author: Anthony S. West - ASW Software
 
 See header for info.
@@ -22,7 +22,7 @@ limitations under the License.
 
 //---------------------------------------------------------------------------
 // Module header
-#include "ASWTools_Version_Tests.h"
+#include "Test_ASWTools_Version.h"
 //---------------------------------------------------------------------------
 #include <iostream>
 //---------------------------------------------------------------------------
@@ -35,11 +35,11 @@ namespace ASWUnitTests
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// TTestGroup_ASWTools_Version_Tests
+// TTest_ASWTools_Version
 /////////////////////////////////////////////////////////////////////////////
 
 //---------------------------------------------------------------------------
-TTestGroup_ASWTools_Version_Tests::TTestGroup_ASWTools_Version_Tests()
+TTest_ASWTools_Version::TTest_ASWTools_Version()
     : inherited("ASWTools_Version_Tests")
 {
     RegisterTest(Test_Compare);
@@ -48,15 +48,15 @@ TTestGroup_ASWTools_Version_Tests::TTestGroup_ASWTools_Version_Tests()
     RegisterTest(Test_SetVersion);
 }
 //---------------------------------------------------------------------------
-TTestGroup_ASWTools_Version_Tests::~TTestGroup_ASWTools_Version_Tests()
+TTest_ASWTools_Version::~TTest_ASWTools_Version()
 {
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::SetUp()
+void TTest_ASWTools_Version::SetUp()
 {
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::TearDown()
+void TTest_ASWTools_Version::TearDown()
 {
 }
 //---------------------------------------------------------------------------
@@ -64,7 +64,7 @@ void TTestGroup_ASWTools_Version_Tests::TearDown()
 // /////// Begin tests after this line ///////////////////////
 
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::Test_Compare()
+void TTest_ASWTools_Version::Test_Compare()
 {
     // Arrange
     TVersion ver1(1, 2, 3, 4);
@@ -72,18 +72,18 @@ void TTestGroup_ASWTools_Version_Tests::Test_Compare()
     TVersion ver3("1.2.3.2");
 
     // Act & Assert
-    AssertTrue(ver1 == ver2, __func__, __LINE__, "Equals operator ver2");
-    AssertFalse(ver1 == ver3, __func__, __LINE__, "Equals operator ver3");
-    AssertTrue(ver1 != ver3, __func__, __LINE__, "Not equals operator ver3");
-    AssertTrue(ver1 > ver3, __func__, __LINE__, "Greater than ver3");
-    AssertTrue(ver1 >= ver3, __func__, __LINE__, "Greater than or equals ver3");
-    AssertTrue(ver1 >= ver2, __func__, __LINE__, "Greater than or equals ver2");
-    AssertTrue(ver3 < ver1, __func__, __LINE__, "Less than ver1");
-    AssertTrue(ver3 <= ver1, __func__, __LINE__, "Less than or equals ver1");
-    AssertTrue(ver1 <= ver2, __func__, __LINE__, "Less than or equals ver2");
+    CheckTrue(ver1 == ver2, __func__, __LINE__, "Equals operator ver2");
+    CheckFalse(ver1 == ver3, __func__, __LINE__, "Equals operator ver3");
+    CheckTrue(ver1 != ver3, __func__, __LINE__, "Not equals operator ver3");
+    CheckTrue(ver1 > ver3, __func__, __LINE__, "Greater than ver3");
+    CheckTrue(ver1 >= ver3, __func__, __LINE__, "Greater than or equals ver3");
+    CheckTrue(ver1 >= ver2, __func__, __LINE__, "Greater than or equals ver2");
+    CheckTrue(ver3 < ver1, __func__, __LINE__, "Less than ver1");
+    CheckTrue(ver3 <= ver1, __func__, __LINE__, "Less than or equals ver1");
+    CheckTrue(ver1 <= ver2, __func__, __LINE__, "Less than or equals ver2");
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::Test_Copy()
+void TTest_ASWTools_Version::Test_Copy()
 {
     // Arrange
     TVersion ver1(1, 2, 3, 4);
@@ -91,14 +91,14 @@ void TTestGroup_ASWTools_Version_Tests::Test_Copy()
     TVersion testVer;
 
     // Act & Assert
-    AssertTrue(ver1.VersionU64 != 0, __func__, __LINE__, "Sanity check that set works");
+    CheckTrue(ver1.VersionU64 != 0, __func__, __LINE__, "Sanity check that set works");
     testVer = ver1;
-    AssertEquals(ver1.VersionU64, testVer.VersionU64, __func__, __LINE__, "Copy ver1");
+    CheckEquals(ver1.VersionU64, testVer.VersionU64, __func__, __LINE__, "Copy ver1");
     testVer.CopyFrom(ver2);
-    AssertEquals(ver2.VersionU64, testVer.VersionU64, __func__, __LINE__, "Copy ver2");
+    CheckEquals(ver2.VersionU64, testVer.VersionU64, __func__, __LINE__, "Copy ver2");
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::Test_ExtractVersionNumbersFromVersionStr()
+void TTest_ASWTools_Version::Test_ExtractVersionNumbersFromVersionStr()
 {
     // Arrange
     TVersion expected(1, 2, 3, 4);
@@ -112,14 +112,14 @@ void TTestGroup_ASWTools_Version_Tests::Test_ExtractVersionNumbersFromVersionStr
     actual.ExtractVersionNumbersFromVersionStr("1.2.3.4");
 
     // Assert
-    AssertEquals(expected.ToStrVer(), actual.ToStrVer(), __func__, __LINE__, "ExtractVersionNumbersFromVersionStr()");
-    AssertEquals(expected.ToStrVer(), actual2.ToStrVer(), __func__, __LINE__, "Constructor test");
-    AssertEquals(expected.ToStrVerW(), actual3.ToStrVerW(), __func__, __LINE__, "Wide string test");
-    AssertEquals(expected.VersionU64, actual4.VersionU64, __func__, __LINE__, "Constructor U64");
-    AssertNotEquals(expected.VersionU64, actualNotEquals.VersionU64, __func__, __LINE__, "Values are default??");
+    CheckEquals(expected.ToStrVer(), actual.ToStrVer(), __func__, __LINE__, "ExtractVersionNumbersFromVersionStr()");
+    CheckEquals(expected.ToStrVer(), actual2.ToStrVer(), __func__, __LINE__, "Constructor test");
+    CheckEquals(expected.ToStrVerW(), actual3.ToStrVerW(), __func__, __LINE__, "Wide string test");
+    CheckEquals(expected.VersionU64, actual4.VersionU64, __func__, __LINE__, "Constructor U64");
+    CheckNotEquals(expected.VersionU64, actualNotEquals.VersionU64, __func__, __LINE__, "Values are default??");
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::Test_SetVersion()
+void TTest_ASWTools_Version::Test_SetVersion()
 {
     // Arrange
     WORD major = static_cast<WORD>(4200);
@@ -133,7 +133,7 @@ void TTestGroup_ASWTools_Version_Tests::Test_SetVersion()
     ver.SetVersion(major, minor, build, revision);
 
     // Assert
-    AssertTrue(parts.Major == major && parts.Minor == minor && parts.Build == build && parts.Revision == revision,
+    CheckTrue(parts.Major == major && parts.Minor == minor && parts.Build == build && parts.Revision == revision,
         __func__, __LINE__, "SetVersion()");
 }
 //---------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /* **************************************************************************
-TestException.h
+ASWUnitTests_Exception.h
 Author: Anthony S. West - ASW Software
 
 Copyright 2025 Anthony S. West
@@ -19,8 +19,8 @@ limitations under the License.
 ************************************************************************** */
 
 //---------------------------------------------------------------------------
-#ifndef TestExceptionH
-#define TestExceptionH
+#ifndef ASWUnitTests_ExceptionH
+#define ASWUnitTests_ExceptionH
 //---------------------------------------------------------------------------
 #include <exception>
 #include <string>
@@ -63,6 +63,9 @@ class TExceptEquals : public TTestException
 {
 public:
     TExceptEquals(std::string const& msg);
+    TExceptEquals(std::string const& method, int line, std::string const& msg);
+    TExceptEquals(std::string const& method, int line, std::string const& expected, std::string const& actual,
+        std::string const& msg);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -72,6 +75,8 @@ class TExceptNotEquals : public TTestException
 {
 public:
     TExceptNotEquals(std::string const& msg);
+    TExceptNotEquals(std::string const& method, int line, std::string const& msg);
+    TExceptNotEquals(std::string const& method, int line, std::string const& value, std::string const& msg);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -81,6 +86,7 @@ class TExceptFalse : public TTestException
 {
 public:
     TExceptFalse(std::string const& msg);
+    TExceptFalse(std::string const& method, int line, std::string const& msg);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -90,9 +96,10 @@ class TExceptTrue : public TTestException
 {
 public:
     TExceptTrue(std::string const& msg);
+    TExceptTrue(std::string const& method, int line, std::string const& msg);
 };
 
 } // namespace ASWUnitTests
 
 //---------------------------------------------------------------------------
-#endif // #ifndef TestExceptionH
+#endif // #ifndef ASWUnitTests_ExceptionH

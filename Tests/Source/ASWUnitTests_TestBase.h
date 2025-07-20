@@ -1,5 +1,5 @@
 /* **************************************************************************
-TestHandler.h
+ASWUnitTests_TestBase.h
 Author: Anthony S. West - ASW Software
 
 A simple unit testing framework.
@@ -25,28 +25,14 @@ limitations under the License.
 
 ************************************************************************** */
 
-#ifndef TestHandlerH
-#define TestHandlerH
+#ifndef ASWUnitTests_TestBaseH
+#define ASWUnitTests_TestBaseH
 //---------------------------------------------------------------------------
 #include <cstdint>
 #include <functional>
 #include <memory>
 #include <string>
 #include <vector>
-//---------------------------------------------------------------------------
-
-//#if __cplusplus < 201103L
-//
-//#if !defined(nullptr)
-//#  define nullptr NULL
-//#endif
-//
-//#if !defined(override)
-//#  define override
-//#endif
-//
-//#endif // #if __cplusplus < 201103L
-
 //---------------------------------------------------------------------------
 
 namespace ASWUnitTests
@@ -83,7 +69,6 @@ public:
 class ITestGroup
 {
 public:
-    //typedef void (*Test_FPtr)(void* thisP);
     typedef std::function<void ()> TestCallback;
     typedef std::vector<TestCallback> TestCallbackList;
 
@@ -92,9 +77,9 @@ public:
     {
     }
 
-    virtual std::string const& GetTestGroupName() = 0;
     virtual TestCallbackList& GetTestCallbackList() = 0;
-    virtual TTestResults const& Results() = 0;
+    virtual std::string const& GetTestGroupName() const = 0;
+    virtual TTestResults const& Results() const = 0;
     virtual void Run() = 0;
     virtual void SetUp() = 0;
     virtual void TearDown() = 0;
@@ -106,6 +91,9 @@ public:
 //
 // Abstract class for a test group that contains limited members for
 // assertion testing.
+//
+// - 'Assert' methods cause the test to immediately fail.
+// - 'Check' methods allow multiple "asserts" per test.
 /////////////////////////////////////////////////////////////////////////////
 class TTestGroupBase : public ITestGroup
 {
@@ -114,6 +102,7 @@ private:
 
 protected:
     bool m_ExceptionExpected;
+    bool m_TestFailedCheck;
     std::string m_ExceptionExpectedText;
     std::string m_Name;
     TTestResults m_Results;
@@ -121,12 +110,20 @@ protected:
 
     virtual void Log(std::string const& msg);
     virtual void RegisterTest(TestCallback callback);
+    virtual void ResetTestFailedOneOrMoreChecks();
     virtual void SetExceptionExpected(bool expected, std::string const& method, int line, std::string const& msg);
+    virtual void SetTestFailedCheck(std::string const& method, int line, std::string const& msg);
+    virtual void SetTestFailedCheck(std::string const& method, int line, std::string const& expected,
+        std::string const& actual, std::string const& msg);
+    virtual void SetTestFailedCheckNotEquals(std::string const& method, int line, std::string const& msg);
+    virtual void SetTestFailedCheckNotEquals(std::string const& method, int line, std::string const& value,
+        std::string const& msg);
     virtual void Test(TestCallback callback); // Child classes call this for performing the test
+    virtual bool TestFailedOneOrMoreChecks();
 
-protected: // Assertion methods - Equals
+protected: // Assertion/Check methods - Equals
     virtual void AssertEquals(
-        bool expected, char actual, std::string const& method, int line, std::string const& msg);
+        bool expected, bool actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertEquals(
         int64_t expected, int64_t actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertEquals(
@@ -148,9 +145,32 @@ protected: // Assertion methods - Equals
     virtual void AssertEquals(std::wstring const& expected, std::wstring const& actual, std::string const& method,
         int line, std::string const& msg);
 
-protected: // Assertion methods - Not Equals
+    virtual void CheckEquals(
+        bool expected, bool actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckEquals(
+        int64_t expected, int64_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckEquals(
+        uint64_t expected, uint64_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckEquals(
+        int32_t expected, int32_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckEquals(
+        uint32_t expected, uint32_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckEquals(
+        int16_t expected, int16_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckEquals(
+        uint16_t expected, uint16_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckEquals(
+        int8_t expected, int8_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckEquals(
+        uint8_t expected, uint8_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckEquals(std::string const& expected, std::string const& actual, std::string const& method,
+        int line, std::string const& msg);
+    virtual void CheckEquals(std::wstring const& expected, std::wstring const& actual, std::string const& method,
+        int line, std::string const& msg);
+
+protected: // Assertion/Check methods - Not Equals
     virtual void AssertNotEquals(
-        bool expected, char actual, std::string const& method, int line, std::string const& msg);
+        bool expected, bool actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertNotEquals(
         int64_t expected, int64_t actual, std::string const& method, int line, std::string const& msg);
     virtual void AssertNotEquals(
@@ -172,47 +192,44 @@ protected: // Assertion methods - Not Equals
     virtual void AssertNotEquals(std::wstring const& expected, std::wstring const& actual, std::string const& method,
         int line, std::string const& msg);
 
-protected: // Assertion methods - Boolean
+    virtual void CheckNotEquals(
+        bool expected, bool actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckNotEquals(
+        int64_t expected, int64_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckNotEquals(
+        uint64_t expected, uint64_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckNotEquals(
+        int32_t expected, int32_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckNotEquals(
+        uint32_t expected, uint32_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckNotEquals(
+        int16_t expected, int16_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckNotEquals(
+        uint16_t expected, uint16_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckNotEquals(
+        int8_t expected, int8_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckNotEquals(
+        uint8_t expected, uint8_t actual, std::string const& method, int line, std::string const& msg);
+    virtual void CheckNotEquals(std::string const& expected, std::string const& actual, std::string const& method,
+        int line, std::string const& msg);
+    virtual void CheckNotEquals(std::wstring const& expected, std::wstring const& actual, std::string const& method,
+        int line, std::string const& msg);
+
+protected: // Assertion/Check methods - Boolean
     virtual void AssertFalse(bool testVal, std::string const& method, int line, std::string const& msg);
     virtual void AssertTrue(bool testVal, std::string const& method, int line, std::string const& msg);
+    virtual void CheckFalse(bool testVal, std::string const& method, int line, std::string const& msg);
+    virtual void CheckTrue(bool testVal, std::string const& method, int line, std::string const& msg);
 
 public:
     TTestGroupBase(std::string const& name);
 
     TestCallbackList& GetTestCallbackList() override;
-    std::string const& GetTestGroupName() override;
-    TTestResults const& Results() override;
+    std::string const& GetTestGroupName() const override;
+    TTestResults const& Results() const override;
     void Run() override;
-};
-
-
-/////////////////////////////////////////////////////////////////////////////
-// TTestHandler
-//
-// Handles the registration running of tests
-/////////////////////////////////////////////////////////////////////////////
-class TTestHandler
-{
-private:
-    typedef std::vector<std::unique_ptr<ITestGroup> > ITestGroups;
-
-private:
-    ITestGroups m_TestGroups;
-
-private:
-    void RegisterTestGroups();
-
-public:
-    static std::string GetUTCTimeISO8601();
-
-public:
-    TTestHandler();
-    ~TTestHandler();
-
-    void Initialize();
-    TTestResults Run();
 };
 
 } // namespace ASWUnitTests
 
-#endif // #ifndef TestHandlerH
+#endif // ASWUnitTests_TestBaseH
