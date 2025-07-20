@@ -71,6 +71,18 @@ TExceptEquals::TExceptEquals(std::string const& msg)
     m_Message = "Values not equal: " + msg;
 }
 //---------------------------------------------------------------------------
+TExceptEquals::TExceptEquals(std::string const& method, int line, std::string const& msg)
+{
+    m_Message = "Values not equal: " + method + " (" + std::to_string(line) + "): " + msg;
+}
+//---------------------------------------------------------------------------
+TExceptEquals::TExceptEquals(
+    std::string const& method, int line, std::string const& expected, std::string const& actual, std::string const& msg)
+{
+    m_Message = "Values not equal: " + method + " (" + std::to_string(line) + "): Expected: \"" + expected +
+        "\" but was \"" + actual + "\". " + msg;
+}
+//---------------------------------------------------------------------------
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -80,7 +92,12 @@ TExceptEquals::TExceptEquals(std::string const& msg)
 //---------------------------------------------------------------------------
 TExceptFalse::TExceptFalse(std::string const& msg)
 {
-    m_Message = "Expected false but was true: \"" + msg + "\"";
+    m_Message = "Expected false but was true: " + msg;
+}
+//---------------------------------------------------------------------------
+TExceptFalse::TExceptFalse(std::string const& method, int line, std::string const& msg)
+{
+    m_Message = "Expected false but was true: " + method + " (" + std::to_string(line) + "): " + msg;
 }
 //---------------------------------------------------------------------------
 
@@ -92,7 +109,18 @@ TExceptFalse::TExceptFalse(std::string const& msg)
 //---------------------------------------------------------------------------
 TExceptNotEquals::TExceptNotEquals(std::string const& msg)
 {
-    m_Message = "Values equal: " + msg;
+    m_Message = "Values are equal: " + msg;
+}
+//---------------------------------------------------------------------------
+TExceptNotEquals::TExceptNotEquals(std::string const& method, int line, std::string const& msg)
+{
+    m_Message = "Values are equal: " + method + " (" + std::to_string(line) + "): " + msg;
+}
+//---------------------------------------------------------------------------
+TExceptNotEquals::TExceptNotEquals(
+    std::string const& method, int line, std::string const& value, std::string const& msg)
+{
+    m_Message = "Values are equal: " + method + " (" + std::to_string(line) + "): Value: \"" + value + "\". " + msg;
 }
 //---------------------------------------------------------------------------
 
@@ -105,6 +133,11 @@ TExceptNotEquals::TExceptNotEquals(std::string const& msg)
 TExceptTrue::TExceptTrue(std::string const& msg)
 {
     m_Message = "Expected true but was false: \"" + msg + "\"";
+}
+//---------------------------------------------------------------------------
+TExceptTrue::TExceptTrue(std::string const& method, int line, std::string const& msg)
+{
+    m_Message = "Expected true but was false: " + method + " (" + std::to_string(line) + "): " + msg;
 }
 //---------------------------------------------------------------------------
 
