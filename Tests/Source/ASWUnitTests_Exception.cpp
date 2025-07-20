@@ -1,5 +1,5 @@
 /* **************************************************************************
-TestException.cpp
+ASWUnitTests_Exception.cpp
 Author: Anthony S. West - ASW Software
 
 See header for info.
@@ -22,7 +22,7 @@ limitations under the License.
 
 //---------------------------------------------------------------------------
 // Module header
-#include "TestException.h"
+#include "ASWUnitTests_Exception.h"
 //---------------------------------------------------------------------------
 
 namespace ASWUnitTests

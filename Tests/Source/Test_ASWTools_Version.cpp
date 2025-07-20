@@ -1,5 +1,5 @@
 /* **************************************************************************
-ASWTools_Version_Tests.cpp
+Test_ASWTools_Version.cpp
 Author: Anthony S. West - ASW Software
 
 See header for info.
@@ -22,7 +22,7 @@ limitations under the License.
 
 //---------------------------------------------------------------------------
 // Module header
-#include "ASWTools_Version_Tests.h"
+#include "Test_ASWTools_Version.h"
 //---------------------------------------------------------------------------
 #include <iostream>
 //---------------------------------------------------------------------------
@@ -35,11 +35,11 @@ namespace ASWUnitTests
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// TTestGroup_ASWTools_Version_Tests
+// TTest_ASWTools_Version
 /////////////////////////////////////////////////////////////////////////////
 
 //---------------------------------------------------------------------------
-TTestGroup_ASWTools_Version_Tests::TTestGroup_ASWTools_Version_Tests()
+TTest_ASWTools_Version::TTest_ASWTools_Version()
     : inherited("ASWTools_Version_Tests")
 {
     RegisterTest(Test_Compare);
@@ -48,15 +48,15 @@ TTestGroup_ASWTools_Version_Tests::TTestGroup_ASWTools_Version_Tests()
     RegisterTest(Test_SetVersion);
 }
 //---------------------------------------------------------------------------
-TTestGroup_ASWTools_Version_Tests::~TTestGroup_ASWTools_Version_Tests()
+TTest_ASWTools_Version::~TTest_ASWTools_Version()
 {
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::SetUp()
+void TTest_ASWTools_Version::SetUp()
 {
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::TearDown()
+void TTest_ASWTools_Version::TearDown()
 {
 }
 //---------------------------------------------------------------------------
@@ -64,7 +64,7 @@ void TTestGroup_ASWTools_Version_Tests::TearDown()
 // /////// Begin tests after this line ///////////////////////
 
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::Test_Compare()
+void TTest_ASWTools_Version::Test_Compare()
 {
     // Arrange
     TVersion ver1(1, 2, 3, 4);
@@ -83,7 +83,7 @@ void TTestGroup_ASWTools_Version_Tests::Test_Compare()
     AssertTrue(ver1 <= ver2, __func__, __LINE__, "Less than or equals ver2");
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::Test_Copy()
+void TTest_ASWTools_Version::Test_Copy()
 {
     // Arrange
     TVersion ver1(1, 2, 3, 4);
@@ -98,7 +98,7 @@ void TTestGroup_ASWTools_Version_Tests::Test_Copy()
     AssertEquals(ver2.VersionU64, testVer.VersionU64, __func__, __LINE__, "Copy ver2");
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::Test_ExtractVersionNumbersFromVersionStr()
+void TTest_ASWTools_Version::Test_ExtractVersionNumbersFromVersionStr()
 {
     // Arrange
     TVersion expected(1, 2, 3, 4);
@@ -119,7 +119,7 @@ void TTestGroup_ASWTools_Version_Tests::Test_ExtractVersionNumbersFromVersionStr
     AssertNotEquals(expected.VersionU64, actualNotEquals.VersionU64, __func__, __LINE__, "Values are default??");
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Version_Tests::Test_SetVersion()
+void TTest_ASWTools_Version::Test_SetVersion()
 {
     // Arrange
     WORD major = static_cast<WORD>(4200);

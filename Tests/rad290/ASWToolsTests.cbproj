@@ -185,24 +185,24 @@
             <BuildOrder>0</BuildOrder>
             <PCH>true</PCH>
         </PCHCompile>
-        <CppCompile Include="..\Source\ASWTools_Path_Tests.cpp">
-            <DependentOn>..\Source\ASWTools_Path_Tests.h</DependentOn>
-            <BuildOrder>13</BuildOrder>
+        <CppCompile Include="..\Source\ASWUnitTests_Exception.cpp">
+            <DependentOn>..\Source\ASWUnitTests_Exception.h</DependentOn>
+            <BuildOrder>12</BuildOrder>
         </CppCompile>
-        <CppCompile Include="..\Source\ASWTools_Version_Tests.cpp">
-            <DependentOn>..\Source\ASWTools_Version_Tests.h</DependentOn>
-            <BuildOrder>11</BuildOrder>
+        <CppCompile Include="..\Source\ASWUnitTests_Handler.cpp">
+            <DependentOn>..\Source\ASWUnitTests_Handler.h</DependentOn>
+            <BuildOrder>2</BuildOrder>
         </CppCompile>
         <CppCompile Include="..\Source\Main.cpp">
             <BuildOrder>1</BuildOrder>
         </CppCompile>
-        <CppCompile Include="..\Source\TestException.cpp">
-            <DependentOn>..\Source\TestException.h</DependentOn>
-            <BuildOrder>12</BuildOrder>
+        <CppCompile Include="..\Source\Test_ASWTools_Path.cpp">
+            <DependentOn>..\Source\Test_ASWTools_Path.h</DependentOn>
+            <BuildOrder>13</BuildOrder>
         </CppCompile>
-        <CppCompile Include="..\Source\TestHandler.cpp">
-            <DependentOn>..\Source\TestHandler.h</DependentOn>
-            <BuildOrder>2</BuildOrder>
+        <CppCompile Include="..\Source\Test_ASWTools_Version.cpp">
+            <DependentOn>..\Source\Test_ASWTools_Version.h</DependentOn>
+            <BuildOrder>11</BuildOrder>
         </CppCompile>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

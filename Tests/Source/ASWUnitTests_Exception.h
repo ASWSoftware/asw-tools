@@ -1,5 +1,5 @@
 /* **************************************************************************
-TestException.h
+ASWUnitTests_Exception.h
 Author: Anthony S. West - ASW Software
 
 Copyright 2025 Anthony S. West
@@ -19,8 +19,8 @@ limitations under the License.
 ************************************************************************** */
 
 //---------------------------------------------------------------------------
-#ifndef TestExceptionH
-#define TestExceptionH
+#ifndef ASWUnitTests_ExceptionH
+#define ASWUnitTests_ExceptionH
 //---------------------------------------------------------------------------
 #include <exception>
 #include <string>
@@ -95,4 +95,4 @@ public:
 } // namespace ASWUnitTests
 
 //---------------------------------------------------------------------------
-#endif // #ifndef TestExceptionH
+#endif // #ifndef ASWUnitTests_ExceptionH

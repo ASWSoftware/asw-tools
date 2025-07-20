@@ -1,5 +1,5 @@
 /* **************************************************************************
-ASWTools_Path_Tests.cpp
+Test_ASWTools_Path.cpp
 Author: Anthony S. West - ASW Software
 
 See header for info.
@@ -22,7 +22,7 @@ limitations under the License.
 
 //---------------------------------------------------------------------------
 // Module header
-#include "ASWTools_Path_Tests.h"
+#include "Test_ASWTools_Path.h"
 //---------------------------------------------------------------------------
 #include <iostream>
 //---------------------------------------------------------------------------
@@ -35,11 +35,11 @@ namespace ASWUnitTests
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// TTestGroup_ASWTools_Path_Tests
+// TTest_ASWTools_Path
 /////////////////////////////////////////////////////////////////////////////
 
 //---------------------------------------------------------------------------
-TTestGroup_ASWTools_Path_Tests::TTestGroup_ASWTools_Path_Tests()
+TTest_ASWTools_Path::TTest_ASWTools_Path()
     : inherited("ASWTools_Path_Tests")
 {
     RegisterTest(Test_IsDots);
@@ -47,15 +47,15 @@ TTestGroup_ASWTools_Path_Tests::TTestGroup_ASWTools_Path_Tests()
     RegisterTest(Test_IsEnvironment);
 }
 //---------------------------------------------------------------------------
-TTestGroup_ASWTools_Path_Tests::~TTestGroup_ASWTools_Path_Tests()
+TTest_ASWTools_Path::~TTest_ASWTools_Path()
 {
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Path_Tests::SetUp()
+void TTest_ASWTools_Path::SetUp()
 {
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Path_Tests::TearDown()
+void TTest_ASWTools_Path::TearDown()
 {
 }
 //---------------------------------------------------------------------------
@@ -63,7 +63,7 @@ void TTestGroup_ASWTools_Path_Tests::TearDown()
 // /////// Begin tests after this line ///////////////////////
 
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Path_Tests::Test_IsDots()
+void TTest_ASWTools_Path::Test_IsDots()
 {
     // Arrange
     std::string dot = ".";
@@ -84,7 +84,7 @@ void TTestGroup_ASWTools_Path_Tests::Test_IsDots()
     AssertFalse(TPathTool::IsDots(L""), __func__, __LINE__, "Empty, wide");
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Path_Tests::Test_IsRelative()
+void TTest_ASWTools_Path::Test_IsRelative()
 {
     // Arrange
     std::string relative1 = "test\\relative\\path\\to\\file.txt";
@@ -130,7 +130,7 @@ void TTestGroup_ASWTools_Path_Tests::Test_IsRelative()
     AssertFalse(TPathTool::IsRelative(fullW), __func__, __LINE__, "fullW, wide");
 }
 //---------------------------------------------------------------------------
-void TTestGroup_ASWTools_Path_Tests::Test_IsEnvironment()
+void TTest_ASWTools_Path::Test_IsEnvironment()
 {
     // Arrange
     std::string relative1 = "test\\relative\\path\\to\\file.txt";

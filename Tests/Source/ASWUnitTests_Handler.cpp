@@ -1,5 +1,5 @@
 /* **************************************************************************
-TestHandler.cpp
+ASWUnitTests_Handler.cpp
 Author: Anthony S. West - ASW Software
 
 See header for info.
@@ -22,7 +22,7 @@ limitations under the License.
 
 //---------------------------------------------------------------------------
 // Module header
-#include "TestHandler.h"
+#include "ASWUnitTests_Handler.h"
 //---------------------------------------------------------------------------
 #include <chrono>
 #include <ctime>
@@ -30,10 +30,10 @@ limitations under the License.
 #include <iostream>
 #include <sstream>
 //---------------------------------------------------------------------------
-#include "TestException.h"
+#include "ASWUnitTests_Exception.h"
 //---------------------------------------------------------------------------
-#include "ASWTools_Path_Tests.h"
-#include "ASWTools_Version_Tests.h"
+#include "Test_ASWTools_Path.h"
+#include "Test_ASWTools_Version.h"
 //---------------------------------------------------------------------------
 
 namespace ASWUnitTests
@@ -479,8 +479,8 @@ void TTestHandler::RegisterTestGroups()
 
     // ----- Add each class to be tested
 
-    m_TestGroups.push_back(std::unique_ptr<TTestGroup_ASWTools_Path_Tests>(new TTestGroup_ASWTools_Path_Tests()));
-    m_TestGroups.push_back(std::unique_ptr<TTestGroup_ASWTools_Version_Tests>(new TTestGroup_ASWTools_Version_Tests()));
+    m_TestGroups.push_back(std::unique_ptr<TTest_ASWTools_Path>(new TTest_ASWTools_Path()));
+    m_TestGroups.push_back(std::unique_ptr<TTest_ASWTools_Version>(new TTest_ASWTools_Version()));
 
     // ----- End adding classes to be tested
 }

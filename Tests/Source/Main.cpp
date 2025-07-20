@@ -25,7 +25,7 @@ limitations under the License.
 #include <iostream>
 #include <tchar.h>
 //---------------------------------------------------------------------------
-#include "TestHandler.h"
+#include "ASWUnitTests_Handler.h"
 //---------------------------------------------------------------------------
 using namespace ASWUnitTests;
 //---------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /* **************************************************************************
-TestHandler.h
+ASWUnitTests_Handler.h
 Author: Anthony S. West - ASW Software
 
 A simple unit testing framework.
@@ -25,8 +25,8 @@ limitations under the License.
 
 ************************************************************************** */
 
-#ifndef TestHandlerH
-#define TestHandlerH
+#ifndef ASWUnitTests_HandlerH
+#define ASWUnitTests_HandlerH
 //---------------------------------------------------------------------------
 #include <cstdint>
 #include <functional>

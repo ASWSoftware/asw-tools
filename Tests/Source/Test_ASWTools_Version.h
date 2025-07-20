@@ -1,5 +1,5 @@
 /* **************************************************************************
-ASWTools_Path_Tests.h
+Test_ASWTools_Version.h
 Author: Anthony S. West - ASW Software
 
 Copyright 2025 Anthony S. West
@@ -19,31 +19,32 @@ limitations under the License.
 ************************************************************************** */
 
 //---------------------------------------------------------------------------
-#ifndef ASWTools_Path_TestsH
-#define ASWTools_Path_TestsH
+#ifndef Test_ASWTools_VersionH
+#define Test_ASWTools_VersionH
 //---------------------------------------------------------------------------
-#include "TestHandler.h"
+#include "ASWUnitTests_Handler.h"
 //---------------------------------------------------------------------------
 
 namespace ASWUnitTests
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// TTestGroup_ASWTools_Path_Tests
+// TTest_ASWTools_Version
 /////////////////////////////////////////////////////////////////////////////
-class TTestGroup_ASWTools_Path_Tests : public TTestGroupBase
+class TTest_ASWTools_Version : public TTestGroupBase
 {
 private:
     typedef TTestGroupBase inherited;
 
 private: // Test methods
-    void Test_IsDots();
-    void Test_IsRelative();
-    void Test_IsEnvironment();
+    void Test_Compare();
+    void Test_Copy();
+    void Test_ExtractVersionNumbersFromVersionStr();
+    void Test_SetVersion();
 
 public:
-    TTestGroup_ASWTools_Path_Tests();
-    ~TTestGroup_ASWTools_Path_Tests() override;
+    TTest_ASWTools_Version();
+    ~TTest_ASWTools_Version() override;
 
     void SetUp() override;
     void TearDown() override;
@@ -52,4 +53,4 @@ public:
 } // ASWUnitTests
 
 //---------------------------------------------------------------------------
-#endif // #ifndef ASWTools_Path_TestsH
+#endif // #ifndef Test_ASWTools_VersionH
