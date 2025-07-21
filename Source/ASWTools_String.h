@@ -77,6 +77,59 @@ public:
     static std::string GetWindowsLastErrorCodeAsStringA(DWORD const winLastErr);
     static std::wstring GetWindowsLastErrorCodeAsStringW(DWORD const winLastErr);
 
+public:
+    static std::vector<std::string> CombineLists_Unique(std::vector<std::string> const& list1,
+        std::vector<std::string> const& list2, bool ignoreBlank, bool ignoreCase);
+    static std::vector<std::wstring> CombineLists_Unique(std::vector<std::wstring> const& list1,
+        std::vector<std::wstring> const& list2, bool ignoreBlank, bool ignoreCase);
+
+    static std::string CombinePathAndArgs(std::string const& path, std::string const& args);
+    static std::wstring CombinePathAndArgs(std::wstring const& path, std::wstring const& args);
+
+    static int Compare(std::string const& s1, std::string const& s2);
+    static int Compare(std::wstring const& s1, std::wstring const& s2);
+    static int CompareIC(std::string const& s1, std::string const& s2);
+    static int CompareIC(std::wstring const& s1, std::wstring const& s2);
+
+    static bool Contains(std::string const& str, std::string const& substr);
+    static bool Contains(std::wstring const& str, std::wstring const& substr);
+    static bool ContainsIC(std::string const& str, std::string const& substr);
+    static bool ContainsIC(std::wstring const& str, std::wstring const& substr);
+
+    static std::string DecodeBase16HexToStrA(std::string const& inHex);
+    static std::wstring DecodeBase16HexToStrW(std::string const& inHex);
+    static int64_t DecodeBase16HexToBytes(std::string const& inHex, BYTE* outBuff, size_t buffSize,
+        int64_t* outBytesWritten);
+
+    static std::string DecodeBase64ToStrA(std::string const& inB64);
+    static std::wstring DecodeBase64ToStrW(std::string const& inB64);
+    static int DecodeBase64ToBytes_Native(char const* src, BYTE* destBytes, size_t* destBytesSize);
+
+    static std::string DelimStr_Escape(std::string const& strIn, const char delim);
+    static std::wstring DelimStr_Escape(std::wstring const& strIn, const wchar_t delim);
+    static std::string DelimStr_UnEscape(std::string const& strIn, const char delim);
+    static std::wstring DelimStr_UnEscape(std::wstring const& strIn, const wchar_t delim);
+
+    static std::string EncodeStrToBase16Hex(std::string const& strUtf8, bool upperCase);
+    static std::string EncodeStrToBase16Hex(std::string const& strUtf8, size_t length, bool upperCase);
+    static std::string EncodeStrToBase16Hex(std::wstring const& strW, bool upperCase);
+    static std::string EncodeStrToBase16Hex(std::wstring const& strW, size_t length, bool upperCase);
+    static std::string EncodeToBase16Hex(BYTE const* bytes, size_t bytesLen, bool upperCase);
+
+    static std::string EncodeStrToBase64Str(std::string const& strUtf8, bool makeWebFriendly);
+    static std::string EncodeStrToBase64Str(std::string const& strUtf8, size_t length, bool makeWebFriendly);
+    static std::string EncodeStrToBase64Str(std::wstring const& strW, bool makeWebFriendly);
+    static std::string EncodeStrToBase64Str(std::wstring const& strW, size_t length, bool makeWebFriendly);
+    static std::string EncodeToBase64Str_Native(BYTE const* bytes, size_t bytesLen, bool makeWebFriendly);
+
+    static bool EndsWith(std::string const& str, std::string const& suffix);
+    static bool EndsWith(std::wstring const& str, std::wstring const& suffix);
+    static bool EndsWithIC(std::string const& str, std::string const& suffix);
+    static bool EndsWithIC(std::wstring const& str, std::wstring const& suffix);
+
+    static std::string Fmt_printf(char const* format, ...);
+    static std::wstring Fmt_printf(wchar_t const* format, ...);
+
     static std::string DateTime_GetUTCNow_ISO8601();
     static std::string DateTime_GetMinDate_ISO8601();
     static std::string SystemTimeToStr_ISO8601(SYSTEMTIME const& sysTime);
@@ -88,6 +141,33 @@ public:
     static std::wstring GetDateTimeStr_LocalW(bool fileNameFriendly = false);
     static std::string GetDateTimeStr_LocalA(bool fileNameFriendly = false);
 
+    static bool HexSingleToByte(char const hexSingle, BYTE* out);
+    static int HexSingleToByte(char const hexSingle);
+
+    static bool IsSpace(int c);
+
+    static bool IsEmptyOrWhiteSpace(std::string const& s);
+    static bool IsEmptyOrWhiteSpace(std::wstring const& s);
+
+    static bool IsValidBase64(std::string const& str, bool isUrlSafe);
+    static bool IsValidBase64(char const* str, bool isUrlSafe);
+
+    static std::string Join(std::vector<std::string> const& elements, std::string const& separator);
+    static std::wstring Join(std::vector<std::wstring> const& elements, std::wstring const& separator);
+
+    static std::string ReplaceAll(std::string const& str, std::string const& find, std::string const& replaceWith);
+    static std::string ReplaceAll(std::string const& str, char find, char replaceWith);
+    static std::wstring ReplaceAll(std::wstring const& str, std::wstring const& find, std::wstring const& replaceWith);
+    static std::wstring ReplaceAll(std::wstring const& str, wchar_t find, wchar_t replaceWith);
+
+    static std::vector<std::string> Split(std::string const& str, const char sep);
+    static std::vector<std::wstring> Split(std::wstring const& str, const wchar_t sep);
+
+    static bool StartsWith(std::string const& str, std::string const& prefix);
+    static bool StartsWith(std::wstring const& str, std::wstring const& prefix);
+    static bool StartsWithIC(std::string const& str, std::string const& prefix);
+    static bool StartsWithIC(std::wstring const& str, std::wstring const& prefix);
+
     static bool StrCpyW(wchar_t* dest, size_t destSize_words, wchar_t const* src);
     static bool StrCpyA(char* dest, size_t destSize_bytes, char const* src);
     static bool StrCpyT(TCHAR* dest, size_t destArrayLen, TCHAR const* src);
@@ -96,8 +176,18 @@ public:
     static bool StrNCpy_safeA(char* dest, size_t destSize_bytes, char const* src, size_t maxCount);
     static bool StrNCpy_safeT(TCHAR* dest, size_t destArrayLen, TCHAR const* src, size_t maxCount);
 
+    static int32_t StrToInt32(std::string const& str);
+    static int64_t StrToInt64(std::string const& str);
+    static uint32_t StrToUInt32(std::string const& str);
+    static uint64_t StrToUInt64(std::string const& str);
+
     static bool ToBool(std::string const& str);
     static bool ToBool(std::wstring const& str);
+
+    static std::string ToLower(std::string const& str);
+    static std::wstring ToLower(std::wstring const& str);
+    static std::string ToUpper(std::string const& str);
+    static std::wstring ToUpper(std::wstring const& str);
 
     template <typename T>
     static std::string ToStringA(T const& value)
@@ -113,11 +203,6 @@ public:
         ss << value;
         return ss.str();
     }
-
-    static std::string ToLower(std::string const& str);
-    static std::wstring ToLower(std::wstring const& str);
-    static std::string ToUpper(std::string const& str);
-    static std::wstring ToUpper(std::wstring const& str);
 
     //For trim functions, see: https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
     static void TrimLeft(std::string& s);
@@ -145,77 +230,16 @@ public:
     static std::wstring Trim_Copy(std::wstring s);
     static std::wstring Trim_Copy(std::wstring s, wchar_t const trimChar, bool trim_iswspace);
 
-    static int Compare(std::string const& s1, std::string const& s2);
-    static int Compare(std::wstring const& s1, std::wstring const& s2);
-    static int CompareIC(std::string const& s1, std::string const& s2);
-    static int CompareIC(std::wstring const& s1, std::wstring const& s2);
-
-    static int32_t StrToInt32(std::string const& str);
-    static int64_t StrToInt64(std::string const& str);
-    static uint32_t StrToUInt32(std::string const& str);
-    static uint64_t StrToUInt64(std::string const& str);
-
     static bool TryStrToInt32(std::string const& str, int32_t* outVal);
     static bool TryStrToInt64(std::string const& str, int64_t* outVal);
     static bool TryStrToUInt32(std::string const& str, uint32_t* outVal);
     static bool TryStrToUInt64(std::string const& str, uint64_t* outVal);
 
-    static bool IsSpace(int c);
-
-    static bool IsEmptyOrWhiteSpace(std::string const& s);
-    static bool IsEmptyOrWhiteSpace(std::wstring const& s);
-
-    static std::string CombinePathAndArgs(std::string const& path, std::string const& args);
-    static std::wstring CombinePathAndArgs(std::wstring const& path, std::wstring const& args);
-
-    static std::vector<std::string> Split(std::string const& str, const char sep);
-    static std::vector<std::wstring> Split(std::wstring const& str, const wchar_t sep);
-
-    static std::string DelimStr_Escape(std::string const& strIn, const char delim);
-    static std::wstring DelimStr_Escape(std::wstring const& strIn, const wchar_t delim);
-    static std::string DelimStr_UnEscape(std::string const& strIn, const char delim);
-    static std::wstring DelimStr_UnEscape(std::wstring const& strIn, const wchar_t delim);
-
-    static std::vector<std::string> CombineLists_Unique(std::vector<std::string> const& list1,
-        std::vector<std::string> const& list2, bool ignoreBlank, bool ignoreCase);
-    static std::vector<std::wstring> CombineLists_Unique(std::vector<std::wstring> const& list1,
-        std::vector<std::wstring> const& list2, bool ignoreBlank, bool ignoreCase);
-
-    static std::string ReplaceAll(std::string const& str, std::string const& find, std::string const& replaceWith);
-    static std::string ReplaceAll(std::string const& str, char find, char replaceWith);
-    static std::wstring ReplaceAll(std::wstring const& str, std::wstring const& find, std::wstring const& replaceWith);
-    static std::wstring ReplaceAll(std::wstring const& str, wchar_t find, wchar_t replaceWith);
-
-    static bool HexSingleToByte(char const hexSingle, BYTE* out);
-    static int HexSingleToByte(char const hexSingle);
-    static std::string EncodeStrToBase16Hex(std::string const& strUtf8, bool upperCase);
-    static std::string EncodeStrToBase16Hex(std::string const& strUtf8, size_t length, bool upperCase);
-    static std::string EncodeStrToBase16Hex(std::wstring const& strW, bool upperCase);
-    static std::string EncodeStrToBase16Hex(std::wstring const& strW, size_t length, bool upperCase);
-    static std::string EncodeToBase16Hex(BYTE const* bytes, size_t bytesLen, bool upperCase);
-    static std::string DecodeBase16HexToStrA(std::string const& inHex);
-    static std::wstring DecodeBase16HexToStrW(std::string const& inHex);
-    static int64_t DecodeBase16HexToBytes(std::string const& inHex, BYTE* outBuff, size_t buffSize,
-        int64_t* outBytesWritten);
-
-    static bool IsValidBase64(std::string const& str, bool isUrlSafe);
-    static bool IsValidBase64(char const* str, bool isUrlSafe);
-    static std::string EncodeStrToBase64Str(std::string const& strUtf8, bool makeWebFriendly);
-    static std::string EncodeStrToBase64Str(std::string const& strUtf8, size_t length, bool makeWebFriendly);
-    static std::string EncodeStrToBase64Str(std::wstring const& strW, bool makeWebFriendly);
-    static std::string EncodeStrToBase64Str(std::wstring const& strW, size_t length, bool makeWebFriendly);
-    static std::string EncodeToBase64Str_Native(BYTE const* bytes, size_t bytesLen, bool makeWebFriendly);
-    static std::string DecodeBase64ToStrA(std::string const& inB64);
-    static std::wstring DecodeBase64ToStrW(std::string const& inB64);
-    static int DecodeBase64ToBytes_Native(char const* src, BYTE* destBytes, size_t* destBytesSize);
-
     static bool URL_Split(std::string const& url, std::string* hostUtf8, std::string* pathUtf8);
     static std::string URL_EncodeUtf8(std::string const& valueUtf8, bool useUpperCaseHex = true);
     static std::string URL_DecodeUtf8(std::string const& encodedStr, bool* invalidHexEncountered);
 
-    static std::string Fmt_printf(char const* format, ...);
-    static std::wstring Fmt_printf(wchar_t const* format, ...);
-
+public: // GUID methods
     static bool StrToGUID(char const* idStr, GUID& guid);
     static bool StrToGUID(wchar_t const* idStr, GUID& guid);
     static std::string StrFromGUID(GUID const* guid);
