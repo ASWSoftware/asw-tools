@@ -39,10 +39,22 @@ private:
 private: // Test methods
     void Test_Combine();
     void Test_ExpandEnvironmentVars();
+    void Test_ExtractDir();
+    void Test_ExtractFileName();
+    void Test_GenerateRandomName();
+    void Test_GetDocumentsDir();
+    void Test_GetExtension();
+    void Test_GetFullPath();
+    void Test_GetLongPath();
+    void Test_GetPicturesDir();
+    void Test_GetShortPath();
+    void Test_GetSpecialFolderDir();
+    void Test_GetTempDir();
     void Test_IsDots();
     void Test_IsEnvironment();
     void Test_IsNetwork();
     void Test_IsRelative();
+    void Test_RemoveExtension();
 
 public:
     TTest_ASWTools_Path();
