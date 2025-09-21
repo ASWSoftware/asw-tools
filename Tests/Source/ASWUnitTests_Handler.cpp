@@ -33,6 +33,7 @@ limitations under the License.
 #include "ASWUnitTests_Exception.h"
 //---------------------------------------------------------------------------
 #include "Test_ASWTools_Path.h"
+#include "Test_ASWTools_Random.h"
 #include "Test_ASWTools_String.h"
 #include "Test_ASWTools_Version.h"
 //---------------------------------------------------------------------------
@@ -105,6 +106,7 @@ void TTestHandler::RegisterTestGroups()
     m_TestGroups.push_back(std::unique_ptr<TTest_ASWTools_Path>(new TTest_ASWTools_Path()));
     m_TestGroups.push_back(std::unique_ptr<TTest_ASWTools_String>(new TTest_ASWTools_String()));
     m_TestGroups.push_back(std::unique_ptr<TTest_ASWTools_Version>(new TTest_ASWTools_Version()));
+    m_TestGroups.push_back(std::unique_ptr<TTest_TMersenneTwisterRandom>(new TTest_TMersenneTwisterRandom()));
 
     // ----- End adding classes to be tested
 }

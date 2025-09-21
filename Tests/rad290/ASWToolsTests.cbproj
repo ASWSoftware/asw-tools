@@ -208,6 +208,10 @@
             <DependentOn>..\Source\Test_ASWTools_Path.h</DependentOn>
             <BuildOrder>13</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\Source\Test_ASWTools_Random.cpp">
+            <DependentOn>..\Source\Test_ASWTools_Random.h</DependentOn>
+            <BuildOrder>17</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\Source\Test_ASWTools_String.cpp">
             <DependentOn>..\Source\Test_ASWTools_String.h</DependentOn>
             <BuildOrder>15</BuildOrder>
