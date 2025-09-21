@@ -169,6 +169,10 @@
             <DependentOn>..\..\Source\ASWTools_Path.h</DependentOn>
             <BuildOrder>7</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\..\Source\ASWTools_Random.cpp">
+            <DependentOn>..\..\Source\ASWTools_Random.h</DependentOn>
+            <BuildOrder>16</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\..\Source\ASWTools_String.cpp">
             <DependentOn>..\..\Source\ASWTools_String.h</DependentOn>
             <BuildOrder>8</BuildOrder>
