@@ -80,11 +80,11 @@ TTest_ASWTools_String::~TTest_ASWTools_String()
 {
 }
 //---------------------------------------------------------------------------
-void TTest_ASWTools_String::SetUp()
+void TTest_ASWTools_String::SetUp_Group()
 {
 }
 //---------------------------------------------------------------------------
-void TTest_ASWTools_String::TearDown()
+void TTest_ASWTools_String::TearDown_Group()
 {
 }
 //---------------------------------------------------------------------------

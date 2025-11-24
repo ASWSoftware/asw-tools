@@ -46,8 +46,8 @@ public:
     TTest_ASWTools_Version();
     ~TTest_ASWTools_Version() override;
 
-    void SetUp() override;
-    void TearDown() override;
+    void SetUp_Group() override;
+    void TearDown_Group() override;
 };
 
 } // ASWUnitTests

@@ -52,11 +52,11 @@ TTest_ASWTools_Version::~TTest_ASWTools_Version()
 {
 }
 //---------------------------------------------------------------------------
-void TTest_ASWTools_Version::SetUp()
+void TTest_ASWTools_Version::SetUp_Group()
 {
 }
 //---------------------------------------------------------------------------
-void TTest_ASWTools_Version::TearDown()
+void TTest_ASWTools_Version::TearDown_Group()
 {
 }
 //---------------------------------------------------------------------------

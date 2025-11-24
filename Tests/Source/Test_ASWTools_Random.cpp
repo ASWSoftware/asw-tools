@@ -56,11 +56,11 @@ TTest_TMersenneTwisterRandom::~TTest_TMersenneTwisterRandom()
 {
 }
 //---------------------------------------------------------------------------
-void TTest_TMersenneTwisterRandom::SetUp()
+void TTest_TMersenneTwisterRandom::SetUp_Group()
 {
 }
 //---------------------------------------------------------------------------
-void TTest_TMersenneTwisterRandom::TearDown()
+void TTest_TMersenneTwisterRandom::TearDown_Group()
 {
 }
 //---------------------------------------------------------------------------

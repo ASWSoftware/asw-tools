@@ -46,8 +46,8 @@ public:
     TTest_TMersenneTwisterRandom();
     ~TTest_TMersenneTwisterRandom() override;
 
-    void SetUp() override;
-    void TearDown() override;
+    void SetUp_Group() override;
+    void TearDown_Group() override;
 };
 
 } // ASWUnitTests

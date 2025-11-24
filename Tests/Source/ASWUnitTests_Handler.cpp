@@ -135,7 +135,7 @@ TTestResults TTestHandler::Run()
         std::cout << "--------------------------------------------------------------------------------" << std::endl;
         std::cout << "[" << GetUTCTimeISO8601() << "] Setting up group " << ++groupNum << " of "
         << nGroups << ": \"" << name << "\"" << std::endl;
-        testGroup.SetUp();
+        testGroup.SetUp_Group();
 
         // run
         std::cout << "Running " << nTestsInGroup << " test" << (nTestsInGroup == 1 ? ". " : "s. ") << std::endl;
@@ -150,7 +150,7 @@ TTestResults TTestHandler::Run()
 
         // tear down
         std::cout << "[" << GetUTCTimeISO8601() << "] Tearing down group: \"" << name << "\"" << std::endl;
-        testGroup.TearDown();
+        testGroup.TearDown_Group();
     }
 
     std::chrono::high_resolution_clock::time_point const end = std::chrono::high_resolution_clock::now();

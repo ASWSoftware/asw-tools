@@ -81,8 +81,8 @@ public:
     virtual std::string const& GetTestGroupName() const = 0;
     virtual TTestResults const& Results() const = 0;
     virtual void Run() = 0;
-    virtual void SetUp() = 0;
-    virtual void TearDown() = 0;
+    virtual void SetUp_Group() = 0;
+    virtual void TearDown_Group() = 0;
 };
 
 

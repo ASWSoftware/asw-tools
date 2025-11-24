@@ -67,11 +67,11 @@ TTest_ASWTools_Path::~TTest_ASWTools_Path()
 {
 }
 //---------------------------------------------------------------------------
-void TTest_ASWTools_Path::SetUp()
+void TTest_ASWTools_Path::SetUp_Group()
 {
 }
 //---------------------------------------------------------------------------
-void TTest_ASWTools_Path::TearDown()
+void TTest_ASWTools_Path::TearDown_Group()
 {
 }
 //---------------------------------------------------------------------------
