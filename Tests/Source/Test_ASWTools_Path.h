@@ -61,7 +61,9 @@ public:
     ~TTest_ASWTools_Path() override;
 
     void SetUp_Group() override;
+    void SetUp_Test(ITestCase& testCase) override;
     void TearDown_Group() override;
+    void TearDown_Test(ITestCase& testCase) override;
 };
 
 } // ASWUnitTests

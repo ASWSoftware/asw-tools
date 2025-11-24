@@ -531,6 +531,26 @@ void TTestGroupBase::SetTestFailedCheckNotEquals(
 }
 //---------------------------------------------------------------------------
 /*
+    TTestGroupBase::SetUp_Test
+
+    Called just before calling the test callback
+*/
+void TTestGroupBase::SetUp_Test(ITestCase& /*testCase*/)
+{
+    // The child group can optionally override this method
+}
+//---------------------------------------------------------------------------
+/*
+    TTestGroupBase::TearDown_Test
+
+    Called just after calling the test callback
+*/
+void TTestGroupBase::TearDown_Test(ITestCase& /*testCase*/)
+{
+    // The child group can optionally override this method
+}
+//---------------------------------------------------------------------------
+/*
     TTestGroupBase::Test
 
     Runs the test call back and sets success/error counts and messages.
@@ -546,13 +566,42 @@ void TTestGroupBase::Test(ITestCase& testCase)
         // Run test
         if (nullptr != testCase.GetTestCallback())
         {
-            if (!testCase.GetName().empty())
+            std::string testFullName = m_Name + "." + testCase.GetName();
+
+            std::string msg = "Running test: " + testFullName;
+            Log(msg);
+
+            try
             {
-                std::string msg = "Running test: " + m_Name + "." + testCase.GetName();
-                Log(msg);
+                SetUp_Test(testCase);
+            }
+            catch (...)
+            {
+                m_ExceptionExpected = false;
+                Log("!!FATAL ERROR!!: SetUp_Test() exception for \"" + testFullName + "\"");
+                throw;
             }
 
-            testCase.DoTest();
+            try
+            {
+                testCase.DoTest();
+            }
+            catch (...)
+            {
+                TearDown_Test(testCase);
+                throw;
+            }
+
+            try
+            {
+                TearDown_Test(testCase);
+            }
+            catch (...)
+            {
+                m_ExceptionExpected = false;
+                Log("!!FATAL ERROR!!: TearDown_Test() exception for \"" + testFullName + "\"");
+                throw;
+            }
         }
 
         // Check for failures (for 'Exception expected' and 'Check' cases)

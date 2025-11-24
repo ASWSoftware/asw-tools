@@ -71,8 +71,18 @@ void TTest_ASWTools_Path::SetUp_Group()
 {
 }
 //---------------------------------------------------------------------------
+void TTest_ASWTools_Path::SetUp_Test(ITestCase& /*testCase*/)
+{
+//    Log("Setting up test: " + testCase.GetName());
+}
+//---------------------------------------------------------------------------
 void TTest_ASWTools_Path::TearDown_Group()
 {
+}
+//---------------------------------------------------------------------------
+void TTest_ASWTools_Path::TearDown_Test(ITestCase& /*testCase*/)
+{
+//    Log("Tearing down test: " + testCase.GetName());
 }
 //---------------------------------------------------------------------------
 
