@@ -1,5 +1,5 @@
 /* **************************************************************************
-Test_ASWTools_Path.h
+Test_ASWTools_String.h
 Author: Anthony S. West - ASW Software
 
 Copyright 2025 Anthony S. West
@@ -19,8 +19,8 @@ limitations under the License.
 ************************************************************************** */
 
 //---------------------------------------------------------------------------
-#ifndef Test_ASWTools_PathH
-#define Test_ASWTools_PathH
+#ifndef Test_ASWTools_StringH
+#define Test_ASWTools_StringH
 //---------------------------------------------------------------------------
 #include "ASWUnitTests_TestBase.h"
 //---------------------------------------------------------------------------
@@ -29,44 +29,58 @@ namespace ASWUnitTests
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// TTest_ASWTools_Path
+// TTest_ASWTools_String
 /////////////////////////////////////////////////////////////////////////////
-class TTest_ASWTools_Path : public TTestGroupBase
+class TTest_ASWTools_String : public TTestGroupBase
 {
 private:
     typedef TTestGroupBase inherited;
 
 private: // Test methods
-    void Test_Combine();
-    void Test_ExpandEnvironmentVars();
-    void Test_ExtractDir();
-    void Test_ExtractFileName();
-    void Test_GenerateRandomName();
-    void Test_GetDocumentsDir();
-    void Test_GetExtension();
-    void Test_GetFullPath();
-    void Test_GetLongPath();
-    void Test_GetPicturesDir();
-    void Test_GetShortPath();
-    void Test_GetSpecialFolderDir();
-    void Test_GetTempDir();
-    void Test_IsDots();
-    void Test_IsEnvironment();
-    void Test_IsNetwork();
-    void Test_IsRelative();
-    void Test_RemoveExtension();
+    void Test_Compare();
+    void Test_CompareIC();
+    void Test_Contains();
+    void Test_ContainsIC();
+    void Test_DateTime_GetMinDate_ISO8601();
+    void Test_DateTime_GetUTCNow_ISO8601();
+    void Test_EncodeStrToBase16Hex();
+    void Test_EncodeStrToBase16Hex_Length();
+    void Test_EncodeStrToBase64Str();
+    void Test_EncodeStrToBase64Str_Length();
+    void Test_EncodeToBase16Hex_Bytes();
+    void Test_EncodeToBase64Str_Native();
+    void Test_EndsWith();
+    void Test_EndsWithIC();
+    void Test_Fmt_printf();
+    void Test_HexSingleToByte();
+    void Test_IsEmptyOrWhiteSpace();
+    void Test_IsSpace();
+    void Test_IsValidBase64();
+    void Test_Join();
+    void Test_ReplaceAll();
+    void Test_ReplaceAll_Char();
+    void Test_Split();
+    void Test_StartsWith();
+    void Test_StartsWithIC();
+    void Test_StrToInt32();
+    void Test_StrToInt32_Invalid();
+    void Test_ToLower();
+    void Test_ToUpper();
+    void Test_Trim();
+    void Test_TrimLeft_Copy();
+    void Test_TrimRight_Copy();
+    void Test_TryStrToInt32();
+    void Test_URL_EncodeDecode();
 
 public:
-    TTest_ASWTools_Path();
-    ~TTest_ASWTools_Path() override;
+    TTest_ASWTools_String();
+    ~TTest_ASWTools_String() override;
 
     void SetUp_Group() override;
-    void SetUp_Test(ITestCase& testCase) override;
     void TearDown_Group() override;
-    void TearDown_Test(ITestCase& testCase) override;
 };
 
 } // ASWUnitTests
 
 //---------------------------------------------------------------------------
-#endif // #ifndef Test_ASWTools_PathH
+#endif // #ifndef Test_ASWTools_StringH

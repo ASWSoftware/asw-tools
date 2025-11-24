@@ -78,6 +78,8 @@ public:
     ~TTestHandler();
 
     void Initialize();
+    void Log(std::string const& msg);
+    void LogAppend(std::string const& msg);
     TTestResults Run();
 };
 

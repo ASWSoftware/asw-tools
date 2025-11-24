@@ -62,6 +62,54 @@ public:
 
 
 /////////////////////////////////////////////////////////////////////////////
+// ITestCase
+//
+// Interface for a test case.
+/////////////////////////////////////////////////////////////////////////////
+class ITestCase
+{
+public:
+    typedef std::function<void ()> TestCallback;
+
+public:
+    explicit ITestCase() = default;
+    ITestCase(ITestCase const&) = default;
+    ITestCase(ITestCase&&) = default;  // move constructor
+    virtual ~ITestCase() = default;
+
+    ITestCase& operator=(const ITestCase&) = delete;
+    ITestCase& operator=(ITestCase&&) = default;  // move assignment
+
+    virtual void DoTest() = 0;
+    virtual std::string const& GetName() const = 0;
+    virtual TestCallback GetTestCallback() const = 0;
+};
+
+
+/////////////////////////////////////////////////////////////////////////////
+// TTestCase
+//
+// Holds info for a test case, including the test callback and the test name.
+/////////////////////////////////////////////////////////////////////////////
+class TTestCase : public ITestCase
+{
+private:
+    typedef ITestCase inherited;
+
+protected:
+    TestCallback m_Callback;
+    std::string m_Name;
+
+public:
+    TTestCase(TestCallback callback, std::string const& name);
+
+    void DoTest() override;
+    std::string const& GetName() const override;
+    TestCallback GetTestCallback() const override;
+};
+
+
+/////////////////////////////////////////////////////////////////////////////
 // ITestGroup
 //
 // Interface for a test group.
@@ -69,8 +117,7 @@ public:
 class ITestGroup
 {
 public:
-    typedef std::function<void ()> TestCallback;
-    typedef std::vector<TestCallback> TestCallbackList;
+    typedef std::vector<std::unique_ptr<ITestCase> > TestCallbackList;
 
 public:
     virtual ~ITestGroup()
@@ -81,8 +128,8 @@ public:
     virtual std::string const& GetTestGroupName() const = 0;
     virtual TTestResults const& Results() const = 0;
     virtual void Run() = 0;
-    virtual void SetUp() = 0;
-    virtual void TearDown() = 0;
+    virtual void SetUp_Group() = 0;
+    virtual void TearDown_Group() = 0;
 };
 
 
@@ -109,7 +156,9 @@ protected:
     TestCallbackList m_TestCallbacks;
 
     virtual void Log(std::string const& msg);
-    virtual void RegisterTest(TestCallback callback);
+    virtual void LogAppend(std::string const& msg);
+    virtual void RegisterTest(TTestCase const& testCase);
+    virtual void RegisterTest(ITestCase::TestCallback callback, std::string const& testName);
     virtual void ResetTestFailedOneOrMoreChecks();
     virtual void SetExceptionExpected(bool expected, std::string const& method, int line, std::string const& msg);
     virtual void SetTestFailedCheck(std::string const& method, int line, std::string const& msg);
@@ -118,7 +167,9 @@ protected:
     virtual void SetTestFailedCheckNotEquals(std::string const& method, int line, std::string const& msg);
     virtual void SetTestFailedCheckNotEquals(std::string const& method, int line, std::string const& value,
         std::string const& msg);
-    virtual void Test(TestCallback callback); // Child classes call this for performing the test
+    virtual void SetUp_Test(ITestCase& testCase); // Called just before calling the test callback
+    virtual void TearDown_Test(ITestCase& testCase); // Called just after calling the test callback
+    virtual void Test(ITestCase& testCase); // Called for each registered test
     virtual bool TestFailedOneOrMoreChecks();
 
 protected: // Assertion/Check methods - Equals

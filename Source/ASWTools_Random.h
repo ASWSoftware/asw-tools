@@ -1,8 +1,16 @@
 /* **************************************************************************
-Test_ASWTools_Version.h
-Author: Anthony S. West - ASW Software
+ASWTools_Random.h
+Author: Anthony S. West - ASW Software, 06/10/2010, updated 2025
 
-Copyright 2025 Anthony S. West
+"Mersenne Twister pseudorandom number generator"
+An implementation based on code written by Takuji Nishimura and Makoto Matsumoto
+See: https://en.wikipedia.org/wiki/Mersenne_Twister
+and: https://jblevins.org/projects/mt
+and: book: Game Code Complete 3rd Edition??
+
+Every attempt should be made to keep this module at least Windows portable.
+
+Copyright 2010 Anthony S. West
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,39 +26,44 @@ limitations under the License.
 
 ************************************************************************** */
 
+#ifndef ASWTools_RandomH
+#define ASWTools_RandomH
 //---------------------------------------------------------------------------
-#ifndef Test_ASWTools_VersionH
-#define Test_ASWTools_VersionH
-//---------------------------------------------------------------------------
-#include "ASWUnitTests_TestBase.h"
+#include <stdint.h>
 //---------------------------------------------------------------------------
 
-namespace ASWUnitTests
+// Period parameters
+#define CMATH_N 624
+
+//---------------------------------------------------------------------------
+
+namespace ASWTools
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// TTest_ASWTools_Version
+// TMersenneTwisterRandom
 /////////////////////////////////////////////////////////////////////////////
-class TTest_ASWTools_Version : public TTestGroupBase
+class TMersenneTwisterRandom
 {
 private:
-    typedef TTestGroupBase inherited;
-
-private: // Test methods
-    void Test_Compare();
-    void Test_Copy();
-    void Test_ExtractVersionNumbersFromVersionStr();
-    void Test_SetVersion();
+    uint32_t m_rseed;
+    uint32_t m_mt[CMATH_N]; // the array for the state vector
+    int32_t m_mti; // m_mti==N+1 means mt[N] is not initialized
 
 public:
-    TTest_ASWTools_Version();
-    ~TTest_ASWTools_Version() override;
+    uint32_t GetRandomSeed();
+    void SetRandomSeed(uint32_t n);
 
-    void SetUp_Group() override;
-    void TearDown_Group() override;
+public:
+    TMersenneTwisterRandom();
+    ~TMersenneTwisterRandom();
+
+    uint32_t Random(uint32_t n); // Returns a number from 0 to n (excluding n)
+    float Random();
+    void Randomize();
 };
 
-} // ASWUnitTests
+} // namespace ASWTools
 
 //---------------------------------------------------------------------------
-#endif // #ifndef Test_ASWTools_VersionH
+#endif // #ifndef ASWTools_RandomH

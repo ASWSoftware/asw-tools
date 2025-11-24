@@ -1,5 +1,5 @@
 /* **************************************************************************
-Test_ASWTools_Path.h
+Test_ASWTools_Random.h
 Author: Anthony S. West - ASW Software
 
 Copyright 2025 Anthony S. West
@@ -18,9 +18,8 @@ limitations under the License.
 
 ************************************************************************** */
 
-//---------------------------------------------------------------------------
-#ifndef Test_ASWTools_PathH
-#define Test_ASWTools_PathH
+#ifndef Test_ASWTools_RandomH
+#define Test_ASWTools_RandomH
 //---------------------------------------------------------------------------
 #include "ASWUnitTests_TestBase.h"
 //---------------------------------------------------------------------------
@@ -29,44 +28,29 @@ namespace ASWUnitTests
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// TTest_ASWTools_Path
+// TTest_TMersenneTwisterRandom
 /////////////////////////////////////////////////////////////////////////////
-class TTest_ASWTools_Path : public TTestGroupBase
+class TTest_TMersenneTwisterRandom : public TTestGroupBase
 {
 private:
     typedef TTestGroupBase inherited;
 
 private: // Test methods
-    void Test_Combine();
-    void Test_ExpandEnvironmentVars();
-    void Test_ExtractDir();
-    void Test_ExtractFileName();
-    void Test_GenerateRandomName();
-    void Test_GetDocumentsDir();
-    void Test_GetExtension();
-    void Test_GetFullPath();
-    void Test_GetLongPath();
-    void Test_GetPicturesDir();
-    void Test_GetShortPath();
-    void Test_GetSpecialFolderDir();
-    void Test_GetTempDir();
-    void Test_IsDots();
-    void Test_IsEnvironment();
-    void Test_IsNetwork();
-    void Test_IsRelative();
-    void Test_RemoveExtension();
+    void Test_Constructor_DefaultSeed();
+    void Test_Random_FloatRange();
+    void Test_Random_UIntRange();
+    void Test_Randomize_ChangesSeed();
+    void Test_SetAndGetSeed();
 
 public:
-    TTest_ASWTools_Path();
-    ~TTest_ASWTools_Path() override;
+    TTest_TMersenneTwisterRandom();
+    ~TTest_TMersenneTwisterRandom() override;
 
     void SetUp_Group() override;
-    void SetUp_Test(ITestCase& testCase) override;
     void TearDown_Group() override;
-    void TearDown_Test(ITestCase& testCase) override;
 };
 
 } // ASWUnitTests
 
 //---------------------------------------------------------------------------
-#endif // #ifndef Test_ASWTools_PathH
+#endif // #ifndef Test_ASWTools_RandomH

@@ -42,21 +42,21 @@ namespace ASWUnitTests
 TTest_ASWTools_Version::TTest_ASWTools_Version()
     : inherited("ASWTools_Version_Tests")
 {
-    RegisterTest(Test_Compare);
-    RegisterTest(Test_Copy);
-    RegisterTest(Test_ExtractVersionNumbersFromVersionStr);
-    RegisterTest(Test_SetVersion);
+    RegisterTest(Test_Compare, "Compare");
+    RegisterTest(Test_Copy, "Copy");
+    RegisterTest(Test_ExtractVersionNumbersFromVersionStr, "ExtractVersionNumbersFromVersionStr");
+    RegisterTest(Test_SetVersion, "SetVersion");
 }
 //---------------------------------------------------------------------------
 TTest_ASWTools_Version::~TTest_ASWTools_Version()
 {
 }
 //---------------------------------------------------------------------------
-void TTest_ASWTools_Version::SetUp()
+void TTest_ASWTools_Version::SetUp_Group()
 {
 }
 //---------------------------------------------------------------------------
-void TTest_ASWTools_Version::TearDown()
+void TTest_ASWTools_Version::TearDown_Group()
 {
 }
 //---------------------------------------------------------------------------
