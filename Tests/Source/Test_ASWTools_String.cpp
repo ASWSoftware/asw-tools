@@ -40,40 +40,40 @@ namespace ASWUnitTests
 TTest_ASWTools_String::TTest_ASWTools_String()
     : inherited("ASWTools_String_Tests")
 {
-    RegisterTest(Test_Compare);
-    RegisterTest(Test_CompareIC);
-    RegisterTest(Test_Contains);
-    RegisterTest(Test_ContainsIC);
-    RegisterTest(Test_DateTime_GetMinDate_ISO8601);
-    RegisterTest(Test_DateTime_GetUTCNow_ISO8601);
-    RegisterTest(Test_EncodeStrToBase16Hex);
-    RegisterTest(Test_EncodeStrToBase16Hex_Length);
-    RegisterTest(Test_EncodeStrToBase64Str);
-    RegisterTest(Test_EncodeStrToBase64Str_Length);
-    RegisterTest(Test_EncodeToBase16Hex_Bytes);
-    RegisterTest(Test_EncodeToBase64Str_Native);
-    RegisterTest(Test_EndsWith);
-    RegisterTest(Test_EndsWithIC);
-    RegisterTest(Test_Fmt_printf);
-    RegisterTest(Test_HexSingleToByte);
-    RegisterTest(Test_IsEmptyOrWhiteSpace);
-    RegisterTest(Test_IsSpace);
-    RegisterTest(Test_IsValidBase64);
-    RegisterTest(Test_Join);
-    RegisterTest(Test_ReplaceAll);
-    RegisterTest(Test_ReplaceAll_Char);
-    RegisterTest(Test_Split);
-    RegisterTest(Test_StartsWith);
-    RegisterTest(Test_StartsWithIC);
-    RegisterTest(Test_StrToInt32);
-    RegisterTest(Test_StrToInt32_Invalid);
-    RegisterTest(Test_ToLower);
-    RegisterTest(Test_ToUpper);
-    RegisterTest(Test_Trim);
-    RegisterTest(Test_TrimLeft_Copy);
-    RegisterTest(Test_TrimRight_Copy);
-    RegisterTest(Test_TryStrToInt32);
-    RegisterTest(Test_URL_EncodeDecode);
+    RegisterTest(Test_Compare, "Compare");
+    RegisterTest(Test_CompareIC, "CompareIC");
+    RegisterTest(Test_Contains, "Contains");
+    RegisterTest(Test_ContainsIC, "ContainsIC");
+    RegisterTest(Test_DateTime_GetMinDate_ISO8601, "DateTime_GetMinDate_ISO8601");
+    RegisterTest(Test_DateTime_GetUTCNow_ISO8601, "DateTime_GetUTCNow_ISO8601");
+    RegisterTest(Test_EncodeStrToBase16Hex, "EncodeStrToBase16Hex");
+    RegisterTest(Test_EncodeStrToBase16Hex_Length, "EncodeStrToBase16Hex_Length");
+    RegisterTest(Test_EncodeStrToBase64Str, "EncodeStrToBase64Str");
+    RegisterTest(Test_EncodeStrToBase64Str_Length, "EncodeStrToBase64Str_Length");
+    RegisterTest(Test_EncodeToBase16Hex_Bytes, "EncodeToBase16Hex_Bytes");
+    RegisterTest(Test_EncodeToBase64Str_Native, "EncodeToBase64Str_Native");
+    RegisterTest(Test_EndsWith, "EndsWith");
+    RegisterTest(Test_EndsWithIC, "EndsWithIC");
+    RegisterTest(Test_Fmt_printf, "Fmt_printf");
+    RegisterTest(Test_HexSingleToByte, "HexSingleToByte");
+    RegisterTest(Test_IsEmptyOrWhiteSpace, "IsEmptyOrWhiteSpace");
+    RegisterTest(Test_IsSpace, "IsSpace");
+    RegisterTest(Test_IsValidBase64, "IsValidBase64");
+    RegisterTest(Test_Join, "Join");
+    RegisterTest(Test_ReplaceAll, "ReplaceAll");
+    RegisterTest(Test_ReplaceAll_Char, "ReplaceAll_Char");
+    RegisterTest(Test_Split, "Split");
+    RegisterTest(Test_StartsWith, "StartsWith");
+    RegisterTest(Test_StartsWithIC, "StartsWithIC");
+    RegisterTest(Test_StrToInt32, "StrToInt32");
+    RegisterTest(Test_StrToInt32_Invalid, "StrToInt32_Invalid");
+    RegisterTest(Test_ToLower, "ToLower");
+    RegisterTest(Test_ToUpper, "ToUpper");
+    RegisterTest(Test_Trim, "Trim");
+    RegisterTest(Test_TrimLeft_Copy, "TrimLeft_Copy");
+    RegisterTest(Test_TrimRight_Copy, "TrimRight_Copy");
+    RegisterTest(Test_TryStrToInt32, "TryStrToInt32");
+    RegisterTest(Test_URL_EncodeDecode, "URL_EncodeDecode");
 }
 //---------------------------------------------------------------------------
 TTest_ASWTools_String::~TTest_ASWTools_String()

@@ -35,6 +35,42 @@ namespace ASWUnitTests
 {
 
 /////////////////////////////////////////////////////////////////////////////
+// TTestCase
+/////////////////////////////////////////////////////////////////////////////
+
+//---------------------------------------------------------------------------
+//TTestCase::TTestCase()
+//    : inherited(),
+//      m_Callback(nullptr)
+//{
+//}
+//---------------------------------------------------------------------------
+TTestCase::TTestCase(TestCallback callback, std::string const& name)
+    : inherited(),
+      m_Callback(callback),
+      m_Name(name)
+{
+}
+//---------------------------------------------------------------------------
+void TTestCase::DoTest()
+{
+    if (nullptr != m_Callback)
+        m_Callback();
+}
+//---------------------------------------------------------------------------
+std::string const& TTestCase::GetName() const
+{
+    return m_Name;
+}
+//---------------------------------------------------------------------------
+ITestCase::TestCallback TTestCase::GetTestCallback() const
+{
+    return m_Callback;
+}
+//---------------------------------------------------------------------------
+
+
+/////////////////////////////////////////////////////////////////////////////
 // TTestGroupBase
 /////////////////////////////////////////////////////////////////////////////
 
@@ -417,9 +453,15 @@ void TTestGroupBase::Log(std::string const& msg)
 
     Developer: Call this method from the child of 'TTestGroupBase', in the constructor.
 */
-void TTestGroupBase::RegisterTest(TestCallback callback)
+void TTestGroupBase::RegisterTest(TTestCase const& testCase)
 {
-    m_TestCallbacks.push_back(callback);
+    m_TestCallbacks.push_back(std::make_unique<TTestCase>(testCase));
+}
+//---------------------------------------------------------------------------
+void TTestGroupBase::RegisterTest(ITestCase::TestCallback callback, std::string const& testName)
+{
+    TTestCase testCase(callback, testName);
+    RegisterTest(testCase);
 }
 //---------------------------------------------------------------------------
 void TTestGroupBase::ResetTestFailedOneOrMoreChecks()
@@ -438,7 +480,8 @@ void TTestGroupBase::Run()
 
     for (TestCallbackList::iterator it = m_TestCallbacks.begin(); it != m_TestCallbacks.end(); it++)
     {
-        Test(*it);
+        ITestCase& testCase = *it->get();
+        Test(testCase);
     }
 }
 //---------------------------------------------------------------------------
@@ -487,7 +530,7 @@ void TTestGroupBase::SetTestFailedCheckNotEquals(
 
     Runs the test call back and sets success/error counts and messages.
 */
-void TTestGroupBase::Test(TestCallback callback)
+void TTestGroupBase::Test(ITestCase& testCase)
 {
     try
     {
@@ -496,7 +539,16 @@ void TTestGroupBase::Test(TestCallback callback)
         ResetTestFailedOneOrMoreChecks();
 
         // Run test
-        callback();
+        if (nullptr != testCase.GetTestCallback())
+        {
+            if (!testCase.GetName().empty())
+            {
+                std::string msg = "Running test: " + m_Name + "." + testCase.GetName();
+                Log(msg);
+            }
+
+            testCase.DoTest();
+        }
 
         // Check for failures (for 'Exception expected' and 'Check' cases)
         if (m_ExceptionExpected)

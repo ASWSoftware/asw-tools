@@ -44,12 +44,12 @@ TTest_TMersenneTwisterRandom::TTest_TMersenneTwisterRandom()
     RegisterTest([this]()
         {
             Test_Constructor_DefaultSeed();
-        });
+        }, "Constructor_DefaultSeed");
 
-    RegisterTest(Test_Random_FloatRange);
-    RegisterTest(Test_Random_UIntRange);
-    RegisterTest(Test_Randomize_ChangesSeed);
-    RegisterTest(Test_SetAndGetSeed);
+    RegisterTest(Test_Random_FloatRange, "Random_FloatRange");
+    RegisterTest(Test_Random_UIntRange, "Random_UIntRange");
+    RegisterTest(Test_Randomize_ChangesSeed, "Randomize_ChangesSeed");
+    RegisterTest(Test_SetAndGetSeed, "SetAndGetSeed");
 }
 //---------------------------------------------------------------------------
 TTest_TMersenneTwisterRandom::~TTest_TMersenneTwisterRandom()

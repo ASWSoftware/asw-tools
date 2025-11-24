@@ -43,24 +43,24 @@ namespace ASWUnitTests
 TTest_ASWTools_Path::TTest_ASWTools_Path()
     : inherited("ASWTools_Path_Tests")
 {
-    RegisterTest(Test_Combine);
-    RegisterTest(Test_ExpandEnvironmentVars);
-    RegisterTest(Test_ExtractDir);
-    RegisterTest(Test_ExtractFileName);
-    RegisterTest(Test_GenerateRandomName);
-    RegisterTest(Test_GetDocumentsDir);
-    RegisterTest(Test_GetExtension);
-    RegisterTest(Test_GetFullPath);
-    RegisterTest(Test_GetLongPath);
-    RegisterTest(Test_GetPicturesDir);
-    RegisterTest(Test_GetShortPath);
-    RegisterTest(Test_GetSpecialFolderDir);
-    RegisterTest(Test_GetTempDir);
-    RegisterTest(Test_IsDots);
-    RegisterTest(Test_IsEnvironment);
-    RegisterTest(Test_IsNetwork);
-    RegisterTest(Test_IsRelative);
-    RegisterTest(Test_RemoveExtension);
+    RegisterTest(Test_Combine, "Combine");
+    RegisterTest(Test_ExpandEnvironmentVars, "ExpandEnvironmentVars");
+    RegisterTest(Test_ExtractDir, "ExtractDir");
+    RegisterTest(Test_ExtractFileName, "ExtractFileName");
+    RegisterTest(Test_GenerateRandomName, "GenerateRandomName");
+    RegisterTest(Test_GetDocumentsDir, "GetDocumentsDir");
+    RegisterTest(Test_GetExtension, "GetExtension");
+    RegisterTest(Test_GetFullPath, "GetFullPath");
+    RegisterTest(Test_GetLongPath, "GetLongPath");
+    RegisterTest(Test_GetPicturesDir, "GetPicturesDir");
+    RegisterTest(Test_GetShortPath, "GetShortPath");
+    RegisterTest(Test_GetSpecialFolderDir, "GetSpecialFolderDir");
+    RegisterTest(Test_GetTempDir, "GetTempDir");
+    RegisterTest(Test_IsDots, "IsDots");
+    RegisterTest(Test_IsEnvironment, "IsEnvironment");
+    RegisterTest(Test_IsNetwork, "IsNetwork");
+    RegisterTest(Test_IsRelative, "IsRelative");
+    RegisterTest(Test_RemoveExtension, "RemoveExtension");
 }
 //---------------------------------------------------------------------------
 TTest_ASWTools_Path::~TTest_ASWTools_Path()
