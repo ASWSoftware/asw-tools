@@ -155,6 +155,7 @@ protected:
     TestCallbackList m_TestCallbacks;
 
     virtual void Log(std::string const& msg);
+    virtual void LogAppend(std::string const& msg);
     virtual void RegisterTest(TTestCase const& testCase);
     virtual void RegisterTest(ITestCase::TestCallback callback, std::string const& testName);
     virtual void ResetTestFailedOneOrMoreChecks();

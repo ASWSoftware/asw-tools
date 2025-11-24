@@ -75,10 +75,10 @@ std::string TTestHandler::GetUTCTimeISO8601()
 //---------------------------------------------------------------------------
 void TTestHandler::Initialize()
 {
-    std::cout << "Initializing test handler and registering test groups..." << std::endl;
+    Log("Initializing test handler and registering test groups...");
     RegisterTestGroups();
 
-    std::cout << "Test groups registered: " << m_TestGroups.size() << std::endl;
+    Log("Test groups registered: " + std::to_string(m_TestGroups.size()));
 
     size_t totalTests = 0;
 
@@ -88,7 +88,17 @@ void TTestHandler::Initialize()
         totalTests += testGroup.GetTestCallbackList().size();
     }
 
-    std::cout << "Total tests registered: " << totalTests << std::endl;
+    Log("Total tests registered: " + std::to_string(totalTests));
+}
+//---------------------------------------------------------------------------
+void TTestHandler::Log(std::string const& msg)
+{
+    std::cout << msg << std::endl;
+}
+//---------------------------------------------------------------------------
+void TTestHandler::LogAppend(std::string const& msg)
+{
+    std::cout << msg;
 }
 //---------------------------------------------------------------------------
 /*
@@ -123,7 +133,7 @@ TTestResults TTestHandler::Run()
     size_t nGroups = m_TestGroups.size();
     std::chrono::high_resolution_clock::time_point const start = std::chrono::high_resolution_clock::now();
 
-    std::cout << "\n[" << GetUTCTimeISO8601() << "] Tests started." << std::endl << std::endl;
+    Log("\n[" + GetUTCTimeISO8601() + "] Tests started.\n");
 
     for (ITestGroups::iterator it = m_TestGroups.begin(); it != m_TestGroups.end(); it++)
     {
@@ -132,33 +142,33 @@ TTestResults TTestHandler::Run()
         size_t nTestsInGroup = testGroup.GetTestCallbackList().size();
 
         // set up
-        std::cout << "--------------------------------------------------------------------------------" << std::endl;
-        std::cout << "[" << GetUTCTimeISO8601() << "] Setting up group " << ++groupNum << " of "
-        << nGroups << ": \"" << name << "\"" << std::endl;
+        Log("--------------------------------------------------------------------------------");
+        Log("[" + GetUTCTimeISO8601() + "] Setting up group " + std::to_string(++groupNum) + " of " +
+            std::to_string(nGroups) + ": \"" + name + "\"");
         testGroup.SetUp_Group();
 
         // run
-        std::cout << "Running " << nTestsInGroup << " test" << (nTestsInGroup == 1 ? ". " : "s. ") << std::endl;
+        Log("Running " + std::to_string(nTestsInGroup) + " test" + std::string((nTestsInGroup == 1) ? "." : "s."));
         testGroup.Run();
         TTestResults const& testGroupResults = testGroup.Results();
-        std::cout << "Done. Succeeded: " << testGroupResults.SuccessCount
-        << ", failed: " << testGroupResults.FailedCount << std::endl;
+        Log("Done. Succeeded: " + std::to_string(testGroupResults.SuccessCount) + ", failed: " +
+            std::to_string(testGroupResults.FailedCount));
 
         testResults.FailedCount += testGroupResults.FailedCount;
         testResults.SuccessCount += testGroupResults.SuccessCount;
         testResults.AddMessages(testGroupResults.Messages);
 
         // tear down
-        std::cout << "[" << GetUTCTimeISO8601() << "] Tearing down group: \"" << name << "\"" << std::endl;
+        Log("[" + GetUTCTimeISO8601() + "] Tearing down group: \"" + name + "\"");
         testGroup.TearDown_Group();
     }
 
     std::chrono::high_resolution_clock::time_point const end = std::chrono::high_resolution_clock::now();
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    Log("--------------------------------------------------------------------------------");
 
-    std::cout << "\n[" << GetUTCTimeISO8601() << "] Tests done: Totals: succeeded: " << testResults.SuccessCount
-    << ", failed: " << testResults.FailedCount << std::endl;
+    Log("\n[" + GetUTCTimeISO8601() + "] Tests done: Totals: succeeded: " + std::to_string(testResults.SuccessCount) +
+        ", failed: " + std::to_string(testResults.FailedCount));
 
     // Get elapsed time
     std::chrono::milliseconds const elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
@@ -173,9 +183,11 @@ TTestResults TTestHandler::Run()
     long long const milliseconds = totalMilliseconds % 1000;
 
     // Display the result
-    std::cout << "Elapsed time: " << std::setfill('0') << std::setw(2) << hours << "h:" << std::setfill('0')
+    std::stringstream ss;
+    ss << "Elapsed time: " << std::setfill('0') << std::setw(2) << hours << "h:" << std::setfill('0')
     << std::setw(2) << mins << "m:" << std::setfill('0') << std::setw(2) << secs << "s."
-    << std::setfill('0') << std::setw(3) << milliseconds << "ms\n";
+    << std::setfill('0') << std::setw(3) << milliseconds << "ms";
+    Log(ss.str());
 
     return testResults;
 }

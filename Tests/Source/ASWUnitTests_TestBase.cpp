@@ -448,6 +448,11 @@ void TTestGroupBase::Log(std::string const& msg)
     std::cout << msg << std::endl;
 }
 //---------------------------------------------------------------------------
+void TTestGroupBase::LogAppend(std::string const& msg)
+{
+    std::cout << msg;
+}
+//---------------------------------------------------------------------------
 /*
     TTestGroupBase::RegisterTest
 
